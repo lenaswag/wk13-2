@@ -1,0 +1,6248 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Little Sound World</title>
+
+<style>
+:root {
+  --cream: #fffaf1;
+  --paper: #ffffff;
+  --ink: #4d4842;
+  --muted: #807b75;
+  --blue: #91b7d9;
+  --blue-dark: #527da5;
+  --blue-light: #eaf3fc;
+  --pink: #e8acba;
+  --pink-light: #fcecf1;
+  --yellow: #f1d28b;
+  --yellow-light: #fff3d4;
+  --brown: #bd997b;
+  --line: #e9e1d7;
+  --shadow: 0 5px 0 #eae3d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Nunito", "Pretendard", "Noto Sans KR",
+    "Apple SD Gothic Neo", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  color: inherit;
+  touch-action: manipulation;
+  transition: .18s ease;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #b68548;
+  outline-offset: 4px;
+}
+
+button:not(:disabled):active {
+  transform: translateY(2px);
+}
+
+h1, h2, h3, p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+}
+
+h2 {
+  font-size: clamp(25px, 3vw, 35px);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 22px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.center {
+  text-align: center;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 14px;
+}
+
+header {
+  background: #fffdf9;
+  border-bottom: 2px solid var(--line);
+  padding: 14px 4%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.logo {
+  border: 0;
+  background: transparent;
+  font-size: clamp(17px, 2.4vw, 25px);
+  font-weight: 900;
+  color: #987557;
+  text-align: left;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coin-badge {
+  background: var(--yellow-light);
+  border: 2px solid #ecd39d;
+  border-radius: 30px;
+  padding: 7px 16px;
+  font-weight: 900;
+  white-space: nowrap;
+  color: #977339;
+}
+
+main {
+  width: min(1380px, 96%);
+  margin: 22px auto 50px;
+}
+
+footer {
+  padding: 20px;
+  color: #9d9286;
+  font-size: 13px;
+  text-align: center;
+}
+
+.screen {
+  animation: appear .3s ease;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn {
+  border: 0;
+  border-radius: 15px;
+  padding: 12px 20px;
+  font-weight: 800;
+  background: #f1ece4;
+  box-shadow: 0 4px 0 #e0d7ca;
+}
+
+.btn-blue {
+  background: #8fb5d9;
+  color: #263f58;
+  box-shadow: 0 4px 0 #7097bd;
+}
+
+.btn-pink {
+  background: #f2ced9;
+  color: #764e5c;
+  box-shadow: 0 4px 0 #deb0bd;
+}
+
+.btn-yellow {
+  background: #f5daa0;
+  color: #765b2d;
+  box-shadow: 0 4px 0 #dfbf78;
+}
+
+.btn-white {
+  background: white;
+  border: 2px solid var(--line);
+  box-shadow: none;
+}
+
+.btn-small {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.panel {
+  background: white;
+  border: 2px solid var(--line);
+  border-radius: 24px;
+  padding: clamp(17px, 3vw, 30px);
+  box-shadow: var(--shadow);
+}
+
+.tag {
+  display: inline-block;
+  background: #f5eee3;
+  color: #927454;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.notice {
+  background: #f6f3ee;
+  color: #78726a;
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  margin-top: 17px;
+}
+
+.goal-box {
+  background: #fff3d8;
+  border: 2px solid #f0dfba;
+  padding: 17px 23px;
+  border-radius: 18px;
+  margin: 20px 0;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.hero {
+  border: 2px solid #e4dac9;
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(120deg, #fef3de, #e8f1fa);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: 325px;
+}
+
+.hero-copy {
+  padding: 35px;
+}
+
+.hero h1 {
+  color: #997252;
+  margin: 15px 0;
+}
+
+.hero p {
+  margin-bottom: 5px;
+}
+
+.hero-picture {
+  width: 100%;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-picture svg {
+  width: 100%;
+}
+
+.world-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0;
+}
+
+.world-card {
+  background: white;
+  border: 2px solid var(--line);
+  border-radius: 23px;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: var(--shadow);
+}
+
+.world-card:hover {
+  transform: translateY(-4px);
+  border-color: #c3a98c;
+}
+
+.world-preview {
+  background: #f4eee3;
+  height: 160px;
+  overflow: hidden;
+}
+
+.world-preview svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.world-info {
+  padding: 19px;
+}
+
+.world-info h3 {
+  font-size: 20px;
+  margin: 7px 0;
+}
+
+.world-info p {
+  margin: 7px 0;
+}
+
+.phoneme-label {
+  color: #587eaa;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.complete-tag {
+  font-size: 12px;
+  background: #fff0c8;
+  color: #9c783c;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.section-heading {
+  margin: 28px 0 10px;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 23px;
+}
+
+.progress-step {
+  text-align: center;
+  border: 2px solid var(--line);
+  background: white;
+  border-radius: 17px;
+  padding: 12px 8px;
+  color: #a1988e;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.progress-step span {
+  display: block;
+  font-size: 28px;
+}
+
+.progress-step.active {
+  background: #eaf3fc;
+  border-color: #9ebcda;
+  color: #527da5;
+}
+
+.progress-step.done {
+  background: #fff3d4;
+  color: #977746;
+  border-color: #ead3a1;
+}
+
+.friend-message {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 2px solid #e5d8c7;
+  background: #fff9ed;
+  border-radius: 20px;
+  margin: 16px 0;
+}
+
+.friend-message svg {
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+}
+
+.friend-message p {
+  margin: 0;
+}
+
+.friend-name {
+  color: #a17d56;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 3px;
+}
+
+.sound-card {
+  border: 2px solid #dce7f3;
+  border-radius: 21px;
+  background: #f0f6fc;
+  padding: 22px;
+  text-align: center;
+}
+
+.sound-card.second {
+  background: #fff1f4;
+  border-color: #f0d7de;
+}
+
+.sound-symbol {
+  font-size: 44px;
+  font-weight: 900;
+  color: #557da7;
+}
+
+.sound-card.second .sound-symbol {
+  color: #b5768a;
+}
+
+.word {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.word-icon {
+  font-size: 61px;
+  line-height: 1.4;
+  display: block;
+}
+
+.mouth-picture {
+  max-width: 200px;
+  margin: 12px auto;
+}
+
+.mouth-picture svg {
+  width: 100%;
+}
+
+.experiment {
+  background: #fff8e8;
+  border: 2px dashed #e2c99b;
+  border-radius: 20px;
+  padding: 21px;
+  margin-top: 20px;
+}
+
+.answer-options {
+  display: grid;
+  gap: 10px;
+}
+
+.answer-button {
+  border: 2px solid var(--line);
+  background: white;
+  padding: 13px 17px;
+  text-align: left;
+  border-radius: 13px;
+  font-weight: 700;
+}
+
+.correct {
+  border-color: #7ca3ca !important;
+  background: #e6f0fc !important;
+}
+
+.incorrect {
+  border-color: #df9cae !important;
+  background: #fff0f2 !important;
+}
+
+.feedback {
+  padding: 15px 18px;
+  border-radius: 15px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.feedback:empty {
+  display: none;
+}
+
+.feedback.good {
+  background: #eaf3fc;
+  color: #486d94;
+}
+
+.feedback.retry {
+  background: #fff1e2;
+  color: #956a43;
+}
+
+.feedback.neutral {
+  background: #f1eee9;
+  color: #756e65;
+}
+
+.speaker-button {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 18px auto;
+  border: 4px solid #c9dbed;
+  border-radius: 50%;
+  background: #e4effc;
+  font-size: 42px;
+  box-shadow: 0 5px 0 #bfcee0;
+}
+
+.listening-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.listening-choice {
+  border: 3px solid var(--line);
+  border-radius: 23px;
+  background: #fffdfa;
+  padding: 20px;
+  min-height: 170px;
+  text-align: center;
+}
+
+.recorder {
+  border: 2px solid #e9e2d8;
+  border-radius: 19px;
+  background: #faf8f3;
+  padding: 17px;
+  text-align: center;
+  margin: 17px 0;
+}
+
+.record-status {
+  color: #837b71;
+  font-size: 14px;
+}
+
+audio {
+  width: min(100%, 340px);
+  height: 43px;
+  margin: 10px 0;
+}
+
+.check-line {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  gap: 11px;
+  margin: 13px 0;
+  cursor: pointer;
+}
+
+.check-line input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  accent-color: #7e9fc4;
+  margin-top: 5px;
+}
+
+details {
+  background: #f6f3ee;
+  border-radius: 15px;
+  padding: 13px 16px;
+  margin: 14px 0;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 800;
+  color: #79664e;
+}
+
+details p:last-child {
+  margin-bottom: 0;
+}
+
+.world-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(330px, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.world-panel,
+.shop-panel {
+  background: white;
+  border: 2px solid #e6ddce;
+  border-radius: 22px;
+  padding: 17px;
+  box-shadow: var(--shadow);
+}
+
+.world-heading,
+.shop-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.world-heading h2,
+.shop-heading h2 {
+  font-size: 23px;
+  margin: 0;
+}
+
+.world-scene {
+  position: relative;
+  aspect-ratio: 1.35;
+  width: 100%;
+  background: #f4e9d5;
+  border: 3px solid #e6d6bd;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scene-bg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.placement-grid {
+  position: absolute;
+  inset: 31% 6% 5%;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.plot {
+  position: relative;
+  border: 2px dashed transparent;
+  background: transparent;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 10px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plot.available {
+  border-color: #cbb28e;
+  background: #fff9ed55;
+}
+
+.plot.available:hover {
+  background: #fff6d5bb;
+}
+
+.plot.occupied:hover {
+  border-color: #bc9970;
+}
+
+.plot.drag-over {
+  border-color: #6c92ba;
+  background: #dce9f8aa;
+}
+
+.plot.selected {
+  border-color: #c18d4e;
+  background: #fff3b777;
+}
+
+.placed-art {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 3px 1px #8a755233);
+  pointer-events: none;
+}
+
+.placed-art svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.plot-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: clamp(8px, 1vw, 12px);
+  color: #65513b;
+  background: #fffaf1d9;
+  border-radius: 8px;
+  line-height: 1.25;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.world-caption {
+  font-size: 13px;
+  color: #8f7b66;
+  margin-top: 8px;
+}
+
+.inventory-heading {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 17px 0 9px;
+}
+
+.inventory {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 80px;
+  border: 2px dashed #e5dac9;
+  border-radius: 15px;
+  padding: 10px;
+  background: #fdfbf7;
+}
+
+.inventory-empty {
+  color: #a39888;
+  font-size: 14px;
+  align-self: center;
+}
+
+.inventory-item {
+  width: 84px;
+  background: white;
+  border: 2px solid #e7ddcd;
+  border-radius: 12px;
+  padding: 6px;
+  text-align: center;
+}
+
+.inventory-item.selected {
+  background: #fff3d3;
+  border-color: #c8a268;
+}
+
+.inventory-item svg {
+  height: 49px;
+  width: 100%;
+}
+
+.inventory-item span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.collection-progress {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.collection-card {
+  border: 2px solid #dfebf7;
+  background: #f0f6fd;
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.collection-card.second {
+  background: #fff0f4;
+  border-color: #f1d9e1;
+}
+
+.collection-card strong {
+  font-size: 24px;
+}
+
+.collection-card.done {
+  border-color: #d7b878;
+  background: #fff5dc;
+}
+
+.shopkeeper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid #eadac3;
+  border-radius: 16px;
+  background: #fff8eb;
+  margin: 12px 0;
+}
+
+.shopkeeper svg {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.shopkeeper p {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 9px;
+}
+
+.shop-item {
+  min-width: 0;
+  padding: 8px 4px;
+  border: 2px solid #e9e1d5;
+  border-radius: 15px;
+  background: #fffdfa;
+  text-align: center;
+}
+
+.shop-item.selected {
+  border-color: #c6a06b;
+  background: #fff3d6;
+}
+
+.shop-item-art {
+  height: 70px;
+  margin: 0 auto;
+}
+
+.shop-item-art svg {
+  width: 100%;
+  height: 100%;
+}
+
+.shop-word {
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.shop-meaning {
+  font-size: 12px;
+  color: #81786a;
+}
+
+.shop-price {
+  color: #a78342;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.shop-audio {
+  background: white;
+  border: 1px solid #e8dece;
+  border-radius: 9px;
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 3px 9px;
+}
+
+.selection-heading {
+  font-size: 15px;
+  font-weight: 800;
+  margin: 15px 0 7px;
+}
+
+.color-row,
+.size-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.color-btn,
+.size-btn {
+  background: white;
+  border: 2px solid var(--line);
+  border-radius: 11px;
+  padding: 7px 9px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.color-btn.selected,
+.size-btn.selected {
+  background: #fff3d4;
+  border-color: #c8a56b;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #00000015;
+  margin-right: 4px;
+}
+
+.private-plan {
+  background: #f7f4ee;
+  border-radius: 15px;
+  padding: 13px;
+  margin: 13px 0;
+  font-size: 15px;
+}
+
+.frame {
+  padding: 13px;
+  background: white;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.speak-btn {
+  width: 100%;
+  background: #91b9df;
+  border: 0;
+  border-radius: 17px;
+  padding: 15px;
+  box-shadow: 0 5px 0 #719ac3;
+  color: #284e73;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.speak-btn.recording {
+  background: #edb1bb;
+  box-shadow: 0 5px 0 #cf929c;
+  color: #7d424e;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .65;
+  }
+}
+
+.consent {
+  font-size: 12px;
+  color: #807b72;
+  line-height: 1.55;
+}
+
+.transcript {
+  padding: 11px 15px;
+  border-radius: 13px;
+  background: #f4f2ed;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+  margin-top: 13px;
+}
+
+.offer {
+  border: 2px solid #e8d9bf;
+  background: #fff9ec;
+  border-radius: 19px;
+  padding: 16px;
+  margin-top: 15px;
+}
+
+.offer-art {
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+}
+
+.offer-art svg {
+  width: 100%;
+  height: 100%;
+}
+
+.offer-word {
+  font-size: 24px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.repair-box {
+  border: 2px solid #efd3c2;
+  background: #fff2e8;
+  padding: 15px;
+  border-radius: 16px;
+  margin: 14px 0;
+}
+
+.manual-box {
+  background: #f5f7fa;
+  border: 2px solid #e0e7f0;
+  padding: 15px;
+  border-radius: 16px;
+  margin: 14px 0;
+}
+
+.manual-box select {
+  display: block;
+  width: 100%;
+  border: 2px solid #e0ded8;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 7px 0 12px;
+  background: white;
+  color: var(--ink);
+}
+
+.bonus-panel {
+  margin-top: 20px;
+  border: 2px solid #e9d9bd;
+  background: #fff9e9;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.summary-card {
+  background: #f6f1e8;
+  border-radius: 17px;
+  padding: 17px 10px;
+  text-align: center;
+}
+
+.summary-number {
+  font-weight: 900;
+  font-size: 34px;
+  color: #a78255;
+}
+
+.summary-label {
+  color: #877b6e;
+  font-size: 13px;
+}
+
+.final-scene {
+  max-width: 760px;
+  margin: 20px auto;
+}
+
+.trophy {
+  font-size: 75px;
+}
+
+@media (max-width: 1100px) {
+  .world-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .world-layout {
+    grid-template-columns: minmax(0,1.1fr) minmax(300px,1fr);
+  }
+
+  .shop-item-art {
+    height: 57px;
+  }
+}
+
+@media (max-width: 780px) {
+  body {
+    font-size: 16px;
+  }
+
+  header {
+    padding: 10px 3%;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 24px;
+    text-align: center;
+  }
+
+  .hero-picture {
+    min-height: 0;
+  }
+
+  .world-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .world-grid {
+    gap: 10px;
+  }
+
+  .world-preview {
+    height: 120px;
+  }
+
+  .world-info {
+    padding: 13px;
+  }
+
+  .world-info h3 {
+    font-size: 17px;
+  }
+
+  .two-col {
+    gap: 10px;
+  }
+
+  .sound-card {
+    padding: 13px;
+  }
+
+  .word {
+    font-size: 29px;
+  }
+
+  .word-icon {
+    font-size: 46px;
+  }
+
+  .sound-symbol {
+    font-size: 36px;
+  }
+
+  .progress-step {
+    font-size: 11px;
+  }
+
+  .friend-message svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    font-size: 15px;
+  }
+
+  .shop-item-art {
+    height: 75px;
+  }
+
+  .summary-number {
+    font-size: 27px;
+  }
+
+  .summary-label {
+    font-size: 11px;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="logo" onclick="goHome()">
+    🏡 My Little Sound World
+  </button>
+
+  <div class="header-right">
+    <div class="coin-badge">
+      🪙 <span id="coinCount">0</span>
+    </div>
+    <button class="btn btn-white btn-small"
+      onclick="goHome()">
+      Home
+    </button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  My Little Sound World · Little Sounds, Big Connections
+</footer>
+
+<script>
+"use strict";
+
+/* =====================================================
+   1. LEARNING CONTENT
+===================================================== */
+
+const WORD = (word, meaning, icon, group, art) => ({
+  word,
+  meaning,
+  icon,
+  group,
+  art: art || word
+});
+
+const DATA = {
+
+  rl: {
+    category: "Consonants",
+    title: "Adventure Island",
+    korean: "나만의 모험 섬",
+    sounds: ["/r/", "/l/"],
+    friend: "Coco",
+    animal: "bear",
+
+    goal:
+      "/r/와 /l/의 차이를 듣고 구별하며, 두 소리가 포함된 단어를 활용하여 원하는 물건을 영어로 요청할 수 있어요.",
+
+    intro:
+      "R과 L의 비밀을 알아내고 멋진 모험 섬을 만들어 보자!",
+
+    tips: [
+      {
+        type: "r",
+        short: "혀끝이 윗니 뒤 잇몸에 닿지 않아요.",
+        detail:
+          "혀끝을 살짝 뒤로 당기거나 혀의 가운데를 높여요. 혀끝이 윗니 뒤쪽에 닿지 않도록 해요."
+      },
+      {
+        type: "l",
+        short: "혀끝을 윗니 뒤 잇몸에 가볍게 대요.",
+        detail:
+          "혀끝을 윗니 바로 뒤의 잇몸에 대고 혀의 양옆으로 공기를 내보내요."
+      }
+    ],
+
+    experiment: {
+      instruction:
+        "right와 light를 번갈아 말해 보세요. 첫소리를 낼 때 혀끝이 어디에 있는지 느껴 보세요.",
+      question:
+        "혀끝이 윗니 뒤 잇몸에 닿는 소리는 무엇인가요?",
+      options: ["/r/", "/l/"],
+      correct: 1,
+      explanation:
+        "맞아요! /l/은 혀끝이 윗니 뒤 잇몸에 닿고, /r/은 혀끝이 그곳에 닿지 않아요."
+    },
+
+    pairs: [
+      [
+        WORD("right", "오른쪽", "➡️", 0),
+        WORD("light", "불빛", "💡", 1)
+      ],
+      [
+        WORD("rock", "바위", "🪨", 0),
+        WORD("lock", "자물쇠", "🔒", 1)
+      ],
+      [
+        WORD("road", "도로", "🛣️", 0),
+        WORD("load", "짐", "📦", 1)
+      ]
+    ],
+
+    shop: [
+      WORD("rock", "바위", "🪨", 0),
+      WORD("lock", "자물쇠", "🔒", 1),
+      WORD("rake", "갈퀴", "🧹", 0),
+      WORD("lake", "호수", "💧", 1),
+      WORD("rope", "밧줄", "🪢", 0),
+      WORD("light", "조명", "💡", 1)
+    ]
+  },
+
+  fp: {
+    category: "Consonants",
+    title: "Cozy Workshop",
+    korean: "아늑한 작업실",
+    sounds: ["/f/", "/p/"],
+    friend: "Milo",
+    animal: "cat",
+
+    goal:
+      "/f/와 /p/의 차이를 듣고 구별하며, 두 소리가 포함된 단어를 활용하여 원하는 물건을 영어로 요청할 수 있어요.",
+
+    intro:
+      "F와 P의 소리를 연습하고 나만의 작업실을 꾸며 보자!",
+
+    tips: [
+      {
+        type: "f",
+        short: "윗니를 아랫입술에 대고 공기를 계속 내보내요.",
+        detail:
+          "윗니를 아랫입술에 가볍게 대고 좁은 틈으로 공기를 계속 내보내요."
+      },
+      {
+        type: "p",
+        short: "두 입술을 닫았다가 열어요.",
+        detail:
+          "두 입술로 공기의 흐름을 막았다가 입술을 열면서 공기를 순간적으로 내보내요."
+      }
+    ],
+
+    experiment: {
+      instruction:
+        "입 앞에 얇은 휴지를 놓고 /f/와 /p/를 각각 발음해 보세요. 공기가 계속 나오는지, 순간적으로 나오는지 비교해 보세요.",
+      question:
+        "공기를 계속 내보내며 길게 발음할 수 있는 소리는 무엇인가요?",
+      options: ["/f/", "/p/"],
+      correct: 0,
+      explanation:
+        "맞아요! /f/는 공기를 계속 내보내고, /p/는 입술을 열면서 공기를 순간적으로 내보내요."
+    },
+
+    pairs: [
+      [
+        WORD("fan", "부채", "🪭", 0),
+        WORD("pan", "프라이팬", "🍳", 1)
+      ],
+      [
+        WORD("fine", "기분이 괜찮은", "😊", 0),
+        WORD("pine", "소나무", "🌲", 1)
+      ],
+      [
+        WORD("four", "숫자 4", "4️⃣", 0),
+        WORD("pour", "따르다", "🫗", 1)
+      ]
+    ],
+
+    shop: [
+      WORD("fan", "부채", "🪭", 0),
+      WORD("pan", "프라이팬", "🍳", 1),
+      WORD("fin", "지느러미 장식", "🐟", 0),
+      WORD("pin", "핀", "📌", 1),
+      WORD("fish", "물고기 장식", "🐠", 0),
+      WORD("pot", "화분", "🪴", 1)
+    ]
+  },
+
+  ee: {
+    category: "Vowels",
+    title: "Dream Village",
+    korean: "꿈의 마을",
+    sounds: ["/iː/", "/ɪ/"],
+    friend: "Lulu",
+    animal: "rabbit",
+
+    goal:
+      "/iː/와 /ɪ/의 차이를 듣고 구별하며, 두 모음이 포함된 단어를 활용하여 원하는 물건을 영어로 요청할 수 있어요.",
+
+    intro:
+      "비슷하게 들리는 두 모음을 알아보고 나만의 마을을 만들어 보자!",
+
+    tips: [
+      {
+        type: "ee",
+        short: "혀의 앞부분을 높이고 입술을 살짝 옆으로 벌려요.",
+        detail:
+          "혀의 앞부분을 높여 소리를 내요. /ɪ/보다 혀가 높고 대체로 더 길게 들려요."
+      },
+      {
+        type: "ih",
+        short: "혀를 조금 낮추고 입의 힘을 풀어요.",
+        detail:
+          "/iː/보다 혀의 위치를 조금 낮추고 입의 긴장을 풀어요. 대체로 더 짧게 들려요."
+      }
+    ],
+
+    experiment: {
+      instruction:
+        "sheep과 ship을 번갈아 말하면서 혀의 위치, 입의 긴장 정도와 소리의 길이를 느껴 보세요.",
+      question:
+        "두 모음의 차이에 대한 올바른 설명은 무엇인가요?",
+      options: [
+        "소리의 길이만 달라요.",
+        "혀의 위치와 소리의 질이 다르고 길이도 달라질 수 있어요."
+      ],
+      correct: 1,
+      explanation:
+        "맞아요! 두 모음은 길이뿐 아니라 혀의 위치와 소리의 질에서도 차이가 있어요."
+    },
+
+    pairs: [
+      [
+        WORD("sheep", "양", "🐑", 0),
+        WORD("ship", "배", "🚢", 1)
+      ],
+      [
+        WORD("heel", "발뒤꿈치", "🦶", 0),
+        WORD("hill", "언덕", "⛰️", 1)
+      ],
+      [
+        WORD("seat", "좌석", "💺", 0),
+        WORD("sit", "앉다", "🪑", 1)
+      ]
+    ],
+
+    shop: [
+      WORD("sheep", "양", "🐑", 0),
+      WORD("ship", "배 장식", "🚢", 1),
+      WORD("bean", "콩", "🫘", 0),
+      WORD("bin", "수납통", "🗑️", 1),
+      WORD("tree", "나무", "🌳", 0),
+      WORD("hill", "언덕", "⛰️", 1)
+    ]
+  },
+
+  au: {
+    category: "Vowels",
+    title: "Secret Garden",
+    korean: "나만의 비밀 정원",
+    sounds: ["/æ/", "/ʌ/"],
+    friend: "Bunny",
+    animal: "rabbit",
+
+    goal:
+      "/æ/와 /ʌ/의 차이를 듣고 구별하며, 두 모음이 포함된 단어를 활용하여 원하는 물건을 영어로 요청할 수 있어요.",
+
+    intro:
+      "A와 U의 소리를 구별하고 예쁜 비밀 정원을 만들어 보자!",
+
+    tips: [
+      {
+        type: "ae",
+        short: "턱을 크게 벌리고 혀의 앞부분을 낮춰요.",
+        detail:
+          "턱을 비교적 크게 내리고 혀의 앞부분을 낮춰서 소리를 내요."
+      },
+      {
+        type: "uh",
+        short: "입을 편안하게 벌리고 혀를 중앙 쪽에 두어요.",
+        detail:
+          "혀를 입 안의 중앙 쪽에 두고 입술을 둥글게 만들지 않아요."
+      }
+    ],
+
+    experiment: {
+      instruction:
+        "턱 아래에 손을 살짝 대고 cap과 cup을 번갈아 말해 보세요. 턱의 움직임을 비교해 보세요.",
+      question:
+        "일반적으로 턱을 더 크게 벌리는 모음은 무엇인가요?",
+      options: ["/æ/", "/ʌ/"],
+      correct: 0,
+      explanation:
+        "맞아요! /æ/는 상대적으로 열린 앞쪽 모음이고, /ʌ/는 혀가 중앙 쪽에 있는 모음이에요."
+    },
+
+    pairs: [
+      [
+        WORD("cap", "모자", "🧢", 0),
+        WORD("cup", "컵", "☕", 1)
+      ],
+      [
+        WORD("bag", "가방", "👜", 0),
+        WORD("bug", "벌레", "🐞", 1)
+      ],
+      [
+        WORD("hat", "모자", "👒", 0),
+        WORD("hut", "오두막", "🛖", 1)
+      ]
+    ],
+
+    shop: [
+      WORD("cap", "모자", "🧢", 0),
+      WORD("cup", "컵", "☕", 1),
+      WORD("bag", "가방", "👜", 0),
+      WORD("bug", "벌레 장식", "🐞", 1),
+      WORD("hat", "챙이 있는 모자", "👒", 0),
+      WORD("hut", "오두막", "🛖", 1)
+    ]
+  }
+};
+
+const COLORS = {
+  natural: { label: "기본", hex: null },
+  pink: { label: "pink", hex: "#e7a1b5" },
+  blue: { label: "blue", hex: "#91b7dd" },
+  red: { label: "red", hex: "#d98686" },
+  yellow: { label: "yellow", hex: "#edcb76" }
+};
+
+const PRICE = 20;
+const PLOT_COUNT = 24;
+
+const STAGES = [
+  { icon: "🧪", title: "Sound Lab" },
+  { icon: "🎙️", title: "Speaking Studio" },
+  { icon: "🏡", title: "My Little World" }
+];
+
+/* =====================================================
+   2. APP STATE
+===================================================== */
+
+const app = document.getElementById("app");
+
+let lesson = null;
+let lessonKey = "";
+let currentView = "home";
+let stage = 0;
+let coins = 0;
+let session = 0;
+let screenVersion = 0;
+let qIndex = 0;
+let studioIndex = 0;
+let questions = [];
+let answered = false;
+let wrongAttempt = false;
+let listened = false;
+
+let purchased = [];
+let nextItemId = 1;
+let selectedItemId = null;
+
+let plan = {
+  word: null,
+  color: "natural",
+  size: "normal"
+};
+
+let offer = null;
+
+let recognition = null;
+let recognitionTimer = null;
+let recognizing = false;
+let speechVersion = 0;
+
+let recordings = {};
+let recorderState = null;
+let micPending = false;
+let micRequestVersion = 0;
+
+let report = createReport();
+
+function createReport() {
+  return {
+    listeningCorrect: 0,
+    listeningTotal: 0,
+    studioCompleted: 0,
+    purchases: 0,
+    recognizedPurchases: 0,
+    manualPurchases: 0,
+    repairs: 0,
+    bonus: false,
+    confidence: ""
+  };
+}
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function esc(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function loadStorage(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+let completed = loadStorage("littleSoundWorldCompletedV2", {});
+
+if (!completed || typeof completed !== "object") {
+  completed = {};
+}
+
+function shuffle(arr) {
+  const copy = [...arr];
+
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
+function updateCoins() {
+  $("coinCount").textContent = coins;
+
+  if ($("shopCoins")) {
+    $("shopCoins").textContent = coins;
+  }
+}
+
+function addCoins(amount) {
+  coins += amount;
+  updateCoins();
+}
+
+function setFeedback(id, message, type = "good") {
+  const element = $(id);
+
+  if (!element) return;
+
+  element.textContent = message;
+  element.className = "feedback " + type;
+}
+
+function show(html, view) {
+  stopAllMedia();
+  screenVersion++;
+
+  currentView = view;
+
+  app.innerHTML =
+    `<section class="screen">${html}</section>`;
+
+  window.scrollTo(0, 0);
+
+  updateCoins();
+}
+
+function mediaBusy() {
+  return Boolean(
+    recorderState || recognizing || micPending
+  );
+}
+
+function progressHTML() {
+  return `
+    <div class="progress">
+      ${STAGES.map((item, i) => `
+        <div class="progress-step
+          ${i === stage ? "active" : ""}
+          ${i < stage ? "done" : ""}">
+          <span>${i < stage ? "✓" : item.icon}</span>
+          ${i + 1}. ${item.title}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function activityLayout(title, subtitle, content, view) {
+  show(`
+    ${progressHTML()}
+
+    <div class="panel">
+      <span class="tag">
+        ACTIVITY ${stage + 1}
+      </span>
+
+      <h2 style="margin:12px 0;">
+        ${title}
+      </h2>
+
+      <p class="muted">${subtitle}</p>
+
+      ${content}
+    </div>
+  `, view);
+}
+
+/* =====================================================
+   3. ORIGINAL SVG ILLUSTRATIONS
+===================================================== */
+
+function animalSVG(animal = "rabbit") {
+  const ears =
+    animal === "rabbit"
+      ? `
+        <rect x="31" y="4" width="19" height="46"
+          rx="10" fill="#fff6e7" stroke="#ae9277" stroke-width="2"/>
+        <rect x="70" y="4" width="19" height="46"
+          rx="10" fill="#fff6e7" stroke="#ae9277" stroke-width="2"/>
+        <rect x="37" y="11" width="7" height="27"
+          rx="4" fill="#efbdc8"/>
+        <rect x="76" y="11" width="7" height="27"
+          rx="4" fill="#efbdc8"/>
+      `
+      : animal === "bear"
+      ? `
+        <circle cx="29" cy="30" r="18"
+          fill="#c59d77" stroke="#a58262" stroke-width="2"/>
+        <circle cx="91" cy="30" r="18"
+          fill="#c59d77" stroke="#a58262" stroke-width="2"/>
+        <circle cx="29" cy="30" r="10" fill="#ead1b7"/>
+        <circle cx="91" cy="30" r="10" fill="#ead1b7"/>
+      `
+      : `
+        <path d="M20 45 L23 8 L51 34 Z"
+          fill="#e8c9a9" stroke="#ad9275" stroke-width="2"/>
+        <path d="M68 34 L97 8 L100 45 Z"
+          fill="#e8c9a9" stroke="#ad9275" stroke-width="2"/>
+        <path d="M28 32 L30 18 L42 33 Z" fill="#efb9bf"/>
+        <path d="M78 33 L91 18 L93 32 Z" fill="#efb9bf"/>
+      `;
+
+  const fur =
+    animal === "bear" ? "#cba681" :
+    animal === "cat" ? "#ecd2b5" : "#fff6e7";
+
+  return `
+    <svg viewBox="0 0 120 125"
+      aria-hidden="true">
+
+      <ellipse cx="60" cy="115" rx="37" ry="7"
+        fill="#c9b59c" opacity=".25"/>
+
+      <rect x="36" y="76" width="48" height="36"
+        rx="20" fill="#94b6d6"
+        stroke="#7899b8" stroke-width="2"/>
+
+      <path d="M41 83 L79 83 L75 110 L45 110 Z"
+        fill="#eee2c8" stroke="#c7b79c" stroke-width="1.5"/>
+
+      <rect x="49" y="88" width="22" height="14"
+        rx="4" fill="#f9efdc" stroke="#cbb99d"/>
+
+      <ellipse cx="30" cy="92" rx="11" ry="15"
+        fill="${fur}" stroke="#ad9277"/>
+      <ellipse cx="90" cy="92" rx="11" ry="15"
+        fill="${fur}" stroke="#ad9277"/>
+
+      ${ears}
+
+      <ellipse cx="60" cy="56" rx="43" ry="36"
+        fill="${fur}" stroke="#ad9277" stroke-width="2"/>
+
+      <ellipse cx="45" cy="53" rx="4" ry="6" fill="#4d443d"/>
+      <ellipse cx="75" cy="53" rx="4" ry="6" fill="#4d443d"/>
+
+      <circle cx="43" cy="51" r="1.3" fill="white"/>
+      <circle cx="73" cy="51" r="1.3" fill="white"/>
+
+      <ellipse cx="34" cy="65" rx="9" ry="5" fill="#eeb6bd"/>
+      <ellipse cx="86" cy="65" rx="9" ry="5" fill="#eeb6bd"/>
+
+      <path d="M55 62 Q60 68 65 62 Q60 58 55 62"
+        fill="#ab7c70"/>
+
+      <path d="M60 66 Q56 72 51 68
+               M60 66 Q64 72 69 68"
+        fill="none" stroke="#6a5546"
+        stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+  `;
+}
+
+function friendMessage(message) {
+  return `
+    <div class="friend-message">
+      ${animalSVG(lesson.animal)}
+      <div>
+        <div class="friend-name">${lesson.friend}</div>
+        <p>${message}</p>
+      </div>
+    </div>
+  `;
+}
+
+function sceneSVG(key) {
+  const isRoom = key === "fp";
+  const island = key === "rl";
+  const village = key === "ee";
+
+  if (isRoom) {
+    return `
+      <svg viewBox="0 0 640 475"
+        preserveAspectRatio="none"
+        aria-hidden="true">
+
+        <rect width="640" height="475" fill="#f7eedc"/>
+
+        <path d="M0 0 H640 V180 L320 230 L0 180 Z"
+          fill="#f9e6de"/>
+
+        <path d="M0 180 L320 230 L640 180 V475 H0 Z"
+          fill="#ead6b7"/>
+
+        ${Array.from({length: 13}, (_,i) => `
+          <path d="M${i * 55 - 20} 180
+                   L${i * 55 - 20} 475"
+            stroke="#cfb896" stroke-width="2"
+            opacity=".35"/>
+        `).join("")}
+
+        ${Array.from({length: 6}, (_,i) => `
+          <path d="M0 ${220 + i * 47}
+                   H640"
+            stroke="#cfb896" stroke-width="2"
+            opacity=".35"/>
+        `).join("")}
+
+        <rect x="30" y="24" width="123" height="106"
+          rx="8" fill="#c7a88c"/>
+
+        <rect x="38" y="32" width="107" height="90"
+          rx="4" fill="#d9eafa"/>
+
+        <path d="M91 34 V120 M40 77 H143"
+          stroke="#fffaf0" stroke-width="7"/>
+
+        <path d="M32 25 Q49 74 38 123"
+          stroke="#e8afbd" stroke-width="14" fill="none"/>
+        <path d="M150 25 Q134 74 145 123"
+          stroke="#e8afbd" stroke-width="14" fill="none"/>
+
+        <rect x="212" y="45" width="190" height="12"
+          rx="5" fill="#b89370"/>
+
+        <text x="235" y="43" font-size="31">🪴</text>
+        <text x="290" y="43" font-size="27">📚</text>
+        <text x="351" y="43" font-size="27">🧺</text>
+
+        <rect x="505" y="73" width="82" height="105"
+          rx="10" fill="#f5f0df" stroke="#bf9f7d" stroke-width="4"/>
+
+        <path d="M513 111 H579 M513 143 H579"
+          stroke="#bf9f7d" stroke-width="3"/>
+
+        <circle cx="545" cy="96" r="4" fill="#b79879"/>
+        <circle cx="545" cy="126" r="4" fill="#b79879"/>
+        <circle cx="545" cy="160" r="4" fill="#b79879"/>
+
+        <ellipse cx="310" cy="350" rx="227" ry="103"
+          fill="#d7e6f1" opacity=".58"/>
+
+        <text x="20" y="179" font-size="37">🧺</text>
+      </svg>
+    `;
+  }
+
+  const base =
+    island ? "#e9e6c7" :
+    village ? "#ece5c7" : "#eae8d0";
+
+  return `
+    <svg viewBox="0 0 640 475"
+      preserveAspectRatio="none"
+      aria-hidden="true">
+
+      <rect width="640" height="475"
+        fill="${base}"/>
+
+      <rect width="640" height="145"
+        fill="#dceaf7"/>
+
+      <circle cx="550" cy="42" r="30"
+        fill="#f6d58a"/>
+
+      <g fill="#fffefa" opacity=".95">
+        <ellipse cx="105" cy="38" rx="46" ry="14"/>
+        <ellipse cx="81" cy="32" rx="22" ry="17"/>
+        <ellipse cx="120" cy="28" rx="25" ry="21"/>
+
+        <ellipse cx="345" cy="49" rx="38" ry="12"/>
+        <ellipse cx="330" cy="40" rx="21" ry="16"/>
+        <ellipse cx="360" cy="42" rx="25" ry="17"/>
+      </g>
+
+      <path d="M0 117 Q90 58 190 119
+               T390 112 T640 108 V182 H0 Z"
+        fill="#d5dbbe"/>
+
+      <path d="M0 146 Q112 105 235 153
+               T480 137 T640 141 V475 H0 Z"
+        fill="${base}"/>
+
+      ${island ? `
+        <path d="M0 200 Q44 256 0 345 V475 H42
+                 Q103 360 58 268 T71 141 L0 141Z"
+          fill="#a9cce5"/>
+
+        <path d="M15 241 Q43 255 18 277
+                 M17 361 Q53 381 23 409"
+          fill="none" stroke="#f2f8fd"
+          stroke-width="3"/>
+
+        <path d="M40 293 L103 270"
+          stroke="#b08b6d" stroke-width="24"/>
+        <path d="M45 287 L100 265"
+          stroke="#ebcba1" stroke-width="13"/>
+
+        <text x="465" y="138" font-size="46">⛺</text>
+      ` : ""}
+
+      ${village ? `
+        <path d="M470 153 Q530 110 640 128
+                 V202 Q530 212 470 153"
+          fill="#b4d3e8"/>
+
+        <path d="M499 157 Q555 165 606 151"
+          fill="none" stroke="#eaf6fd" stroke-width="4"/>
+
+        <g transform="translate(68 71)">
+          <rect x="0" y="35" width="87" height="71"
+            rx="4" fill="#f5e6d0"
+            stroke="#c6ab8e" stroke-width="2"/>
+          <path d="M-8 39 L42 -2 L95 39 Z"
+            fill="#df9ca8" stroke="#c48b93" stroke-width="2"/>
+          <rect x="35" y="65" width="20" height="41"
+            rx="3" fill="#b68f70"/>
+          <rect x="10" y="53" width="16" height="19"
+            rx="3" fill="#d3e5f3"/>
+          <rect x="62" y="53" width="16" height="19"
+            rx="3" fill="#d3e5f3"/>
+        </g>
+      ` : ""}
+
+      ${!island && !village ? `
+        <g transform="translate(45 72)">
+          <rect x="0" y="36" width="91" height="66"
+            rx="4" fill="#f8edd9"
+            stroke="#c6ac8d" stroke-width="2"/>
+          <path d="M-9 40 L44 -4 L100 40 Z"
+            fill="#e6a5b7" stroke="#c68d9e" stroke-width="2"/>
+          <rect x="33" y="62" width="25" height="40"
+            rx="5" fill="#bc9775"/>
+          <rect x="9" y="49" width="18" height="20"
+            rx="4" fill="#d4e7f6"/>
+          <rect x="65" y="49" width="18" height="20"
+            rx="4" fill="#d4e7f6"/>
+        </g>
+
+        <g transform="translate(510 96)">
+          <ellipse cx="25" cy="61" rx="48" ry="10"
+            fill="#c7b28e" opacity=".3"/>
+          <rect x="20" y="25" width="12" height="42"
+            rx="4" fill="#b99574"/>
+          <circle cx="25" cy="14" r="40" fill="#d7d9b7"/>
+          <circle cx="4" cy="5" r="26" fill="#e1dfbf"/>
+          <circle cx="46" cy="6" r="24" fill="#e1dfbf"/>
+          <circle cx="5" cy="13" r="6" fill="#e9a8b7"/>
+          <circle cx="43" cy="1" r="6" fill="#e9a8b7"/>
+          <circle cx="22" cy="32" r="6" fill="#e9a8b7"/>
+        </g>
+      ` : ""}
+
+      <path d="M150 475 Q210 360 315 330
+               T450 170"
+        stroke="#ddc6a2" stroke-width="50"
+        fill="none" opacity=".65"/>
+
+      <path d="M150 475 Q210 360 315 330
+               T450 170"
+        stroke="#f0dfbd" stroke-width="32"
+        fill="none" opacity=".8"/>
+
+      <g fill="#c3a17c">
+        ${Array.from({length: 17}, (_,i) => `
+          <rect x="${i * 40}"
+            y="151" width="10" height="36"
+            rx="3"/>
+        `).join("")}
+
+        <rect x="0" y="160" width="640" height="7" rx="3"/>
+        <rect x="0" y="174" width="640" height="7" rx="3"/>
+      </g>
+
+      <g font-size="24">
+        <text x="17" y="216">🌷</text>
+        <text x="593" y="241">🌼</text>
+        <text x="10" y="438">🌼</text>
+        <text x="590" y="454">🌷</text>
+      </g>
+
+      <g fill="#fff7e8" opacity=".9">
+        ${Array.from({length: 23}, (_,i) => {
+          const x = (i * 137 + 29) % 640;
+          const y = 202 + ((i * 67) % 262);
+
+          return `
+            <circle cx="${x}" cy="${y}"
+              r="${i % 3 + 1}"/>
+          `;
+        }).join("")}
+      </g>
+    </svg>
+  `;
+}
+
+const NATURAL_COLORS = {
+  cap: "#a6bfd9",
+  cup: "#f0dfbd",
+  bag: "#d5b492",
+  bug: "#d98585",
+  hat: "#e9cf9e",
+  hut: "#d8b18a",
+  rock: "#b2b7bc",
+  lock: "#ddbb79",
+  rake: "#b89573",
+  lake: "#a4c8df",
+  rope: "#c4a27f",
+  light: "#f1d48c",
+  fan: "#e5b0bb",
+  pan: "#a9a9b1",
+  fin: "#8db8d7",
+  pin: "#d99fa9",
+  fish: "#e7b98c",
+  pot: "#cfa081",
+  sheep: "#f4ead8",
+  ship: "#99b9d9",
+  bean: "#d9b28b",
+  bin: "#a9bfd5",
+  tree: "#c8cdaa",
+  hill: "#d5d8b7"
+};
+
+function itemSVG(item, color = "natural", size = "normal") {
+  const c = COLORS[color]?.hex ||
+    NATURAL_COLORS[item.word] || "#cbb99f";
+
+  const outline = "#80776c";
+
+  const scale =
+    size === "big" ? 1.05 :
+    size === "small" ? .64 : .88;
+
+  const shapes = {
+
+    cap: `
+      <path d="M22 60 Q20 20 52 17 Q82 15 90 60 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M48 59 Q81 49 114 67
+               Q101 81 54 72 L22 60 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M54 18 Q43 39 45 59"
+        fill="none" stroke="#ffffff88" stroke-width="3"/>
+      <circle cx="54" cy="16" r="4" fill="${c}"/>
+    `,
+
+    cup: `
+      <path d="M82 37 Q111 30 111 53
+               Q109 75 82 70"
+        fill="none" stroke="${c}" stroke-width="11"/>
+      <path d="M23 29 H89 L82 83
+               Q56 100 30 83 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <ellipse cx="56" cy="29" rx="33" ry="10"
+        fill="#fff3df" stroke="${outline}" stroke-width="2"/>
+      <path d="M39 47 V74"
+        stroke="#ffffff88" stroke-width="5"
+        stroke-linecap="round"/>
+    `,
+
+    bag: `
+      <path d="M42 40 V27 Q60 6 78 27 V40"
+        fill="none" stroke="${outline}" stroke-width="7"/>
+      <rect x="20" y="35" width="80" height="60"
+        rx="15" fill="${c}"
+        stroke="${outline}" stroke-width="2"/>
+      <rect x="44" y="52" width="32" height="25"
+        rx="5" fill="#ffffff44"/>
+      <path d="M20 45 H100"
+        stroke="#ffffff66" stroke-width="3"/>
+    `,
+
+    bug: `
+      <ellipse cx="60" cy="63" rx="34" ry="35"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <circle cx="60" cy="28" r="16" fill="#625952"/>
+      <path d="M60 39 V95"
+        stroke="#625952" stroke-width="2"/>
+      <g fill="#625952">
+        <circle cx="44" cy="50" r="6"/>
+        <circle cx="76" cy="50" r="6"/>
+        <circle cx="40" cy="73" r="7"/>
+        <circle cx="80" cy="73" r="7"/>
+      </g>
+      <path d="M52 17 L43 6 M68 17 L77 6"
+        stroke="#625952" stroke-width="3"
+        stroke-linecap="round"/>
+    `,
+
+    hat: `
+      <ellipse cx="60" cy="76" rx="53" ry="20"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M31 72 L34 35 Q60 12 86 35 L89 72
+               Q60 85 31 72Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M32 61 Q60 72 88 61"
+        fill="none" stroke="#fff4df" stroke-width="9"/>
+    `,
+
+    hut: `
+      <rect x="25" y="43" width="75" height="62"
+        rx="3" fill="#f8e7cc"
+        stroke="${outline}" stroke-width="2"/>
+      <path d="M10 45 L60 4 L115 45 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="49" y="65" width="24" height="40"
+        rx="3" fill="#b79676"/>
+      <rect x="30" y="54" width="15" height="19"
+        rx="3" fill="#bbd5e8"/>
+      <rect x="80" y="54" width="15" height="19"
+        rx="3" fill="#bbd5e8"/>
+    `,
+
+    rock: `
+      <path d="M15 83 L24 44 L48 20 L82 29
+               L108 64 L99 91 L53 101 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M24 44 L51 50 L82 29
+               M51 50 L53 101 M51 50 L108 64"
+        fill="none" stroke="#ffffff55" stroke-width="3"/>
+    `,
+
+    lock: `
+      <path d="M39 48 V29 Q39 7 60 7
+               Q82 7 82 29 V48"
+        fill="none" stroke="#929398" stroke-width="12"/>
+      <rect x="25" y="39" width="70" height="61"
+        rx="12" fill="${c}"
+        stroke="${outline}" stroke-width="2"/>
+      <circle cx="60" cy="63" r="8" fill="#726759"/>
+      <rect x="56" y="63" width="8" height="17"
+        rx="3" fill="#726759"/>
+    `,
+
+    rake: `
+      <path d="M59 8 L59 77"
+        stroke="${c}" stroke-width="11"
+        stroke-linecap="round"/>
+      <path d="M24 75 H96"
+        stroke="#7e8589" stroke-width="9"
+        stroke-linecap="round"/>
+      ${Array.from({length:7}, (_,i) => `
+        <path d="M${25+i*11} 76 V100"
+          stroke="#7e8589" stroke-width="5"
+          stroke-linecap="round"/>
+      `).join("")}
+    `,
+
+    lake: `
+      <ellipse cx="60" cy="66" rx="55" ry="34"
+        fill="#d6c6a5"/>
+      <ellipse cx="60" cy="62" rx="48" ry="29"
+        fill="${c}" stroke="#96afc0" stroke-width="2"/>
+      <path d="M28 54 Q40 47 54 54
+               M65 72 Q79 65 94 72"
+        fill="none" stroke="#fff9ef"
+        stroke-width="3" stroke-linecap="round"/>
+      <g fill="#d8dcba">
+        <ellipse cx="21" cy="70" rx="7" ry="15"/>
+        <ellipse cx="99" cy="48" rx="7" ry="15"/>
+      </g>
+    `,
+
+    rope: `
+      <g fill="none" stroke="${c}" stroke-width="9">
+        <ellipse cx="57" cy="58" rx="39" ry="34"/>
+        <ellipse cx="57" cy="58" rx="28" ry="24"/>
+        <ellipse cx="57" cy="58" rx="17" ry="14"/>
+        <path d="M86 84 Q116 83 107 105"
+          stroke-linecap="round"/>
+      </g>
+    `,
+
+    light: `
+      <path d="M60 9 Q24 9 24 43
+               Q25 61 43 74 H77
+               Q95 61 96 43 Q96 9 60 9"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M48 74 L48 91 H72 L72 74"
+        fill="#a8a8ac" stroke="${outline}" stroke-width="2"/>
+      <path d="M48 81 H72 M48 88 H72"
+        stroke="#777b80" stroke-width="3"/>
+      <path d="M43 31 Q41 17 57 18"
+        fill="none" stroke="#fff9df"
+        stroke-width="5" stroke-linecap="round"/>
+    `,
+
+    fan: `
+      <path d="M60 98 L8 42
+               Q60 -17 112 42 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      ${[15,32,48,72,88,105].map((x,i) => `
+        <path d="M60 98 L${x} ${i === 0 || i === 5 ? 39 : 17}"
+          stroke="#fff8ee" stroke-width="2"/>
+      `).join("")}
+      <rect x="55" y="86" width="10" height="25"
+        rx="4" fill="#ba9675"/>
+    `,
+
+    pan: `
+      <ellipse cx="46" cy="55" rx="37" ry="33"
+        fill="${c}" stroke="${outline}" stroke-width="3"/>
+      <ellipse cx="46" cy="50" rx="28" ry="24"
+        fill="#e5e1dc" stroke="${outline}" stroke-width="2"/>
+      <rect x="77" y="48" width="40" height="13"
+        rx="6" fill="#9a7f68"/>
+      <circle cx="108" cy="54" r="3" fill="#f2e8d9"/>
+    `,
+
+    fin: `
+      <path d="M13 90 Q39 80 70 13
+               Q94 24 92 71 L107 91 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M8 94 Q25 86 42 94
+               T76 94 T114 94"
+        fill="none" stroke="#86b5d6"
+        stroke-width="7" stroke-linecap="round"/>
+    `,
+
+    pin: `
+      <path d="M61 57 L42 107"
+        stroke="#97999c" stroke-width="5"
+        stroke-linecap="round"/>
+      <rect x="45" y="14" width="40" height="24"
+        rx="7" fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="55" y="34" width="20" height="24"
+        rx="5" fill="${c}"/>
+      <ellipse cx="65" cy="59" rx="28" ry="9"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+    `,
+
+    fish: `
+      <ellipse cx="51" cy="57" rx="39" ry="29"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M85 57 L113 29 V85 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <path d="M49 32 L66 12 L79 37"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <circle cx="30" cy="51" r="5" fill="#4f4a43"/>
+      <circle cx="29" cy="49" r="1.5" fill="white"/>
+      <path d="M48 43 Q69 56 48 72"
+        fill="#ffffff55"/>
+    `,
+
+    pot: `
+      <g fill="#c9cfa8">
+        <ellipse cx="45" cy="31" rx="13" ry="24"
+          transform="rotate(-30 45 31)"/>
+        <ellipse cx="76" cy="29" rx="13" ry="24"
+          transform="rotate(30 76 29)"/>
+        <ellipse cx="60" cy="21" rx="11" ry="21"/>
+      </g>
+      <path d="M26 50 H94 L85 101 H35 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="22" y="46" width="76" height="13"
+        rx="4" fill="${c}" stroke="${outline}" stroke-width="2"/>
+    `,
+
+    sheep: `
+      <g stroke="#aa9e8e" stroke-width="1.6">
+        <rect x="28" y="75" width="10" height="27"
+          rx="4" fill="#988575"/>
+        <rect x="69" y="75" width="10" height="27"
+          rx="4" fill="#988575"/>
+        <g fill="${c}">
+          <circle cx="34" cy="48" r="24"/>
+          <circle cx="56" cy="39" r="25"/>
+          <circle cx="77" cy="51" r="24"/>
+          <circle cx="54" cy="65" r="27"/>
+        </g>
+        <ellipse cx="91" cy="51" rx="21" ry="26"
+          fill="#e3cfb7"/>
+        <ellipse cx="78" cy="30" rx="7" ry="13"
+          transform="rotate(-45 78 30)"
+          fill="#e3cfb7"/>
+      </g>
+      <circle cx="98" cy="46" r="3.5" fill="#62564c"/>
+      <circle cx="106" cy="61" r="3" fill="#80695c"/>
+    `,
+
+    ship: `
+      <path d="M13 72 H110 L94 97 H31 Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="57" y="13" width="4" height="61"
+        fill="#a88765"/>
+      <path d="M55 16 L22 64 H55Z"
+        fill="#fff3da" stroke="#b9ae98" stroke-width="1.5"/>
+      <path d="M65 29 L94 65 H65Z"
+        fill="${c}" stroke="${outline}" stroke-width="1.5"/>
+      <path d="M7 105 Q20 98 35 105
+               T65 105 T95 105 T119 105"
+        stroke="#a4c7de" stroke-width="5" fill="none"/>
+    `,
+
+    bean: `
+      <g fill="${c}" stroke="${outline}" stroke-width="2">
+        <path d="M27 23 Q59 2 69 34
+                 Q72 53 48 60
+                 Q34 67 19 54
+                 Q8 38 27 23Z"/>
+        <path d="M75 61 Q101 41 110 69
+                 Q115 88 91 99
+                 Q72 107 61 88
+                 Q57 73 75 61Z"/>
+        <path d="M23 74 Q48 56 54 81
+                 Q57 100 34 106
+                 Q12 112 12 94 Q9 82 23 74Z"/>
+      </g>
+    `,
+
+    bin: `
+      <path d="M25 31 H95 L84 104 H36Z"
+        fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="20" y="21" width="80" height="14"
+        rx="5" fill="${c}" stroke="${outline}" stroke-width="2"/>
+      <rect x="46" y="9" width="28" height="12"
+        rx="5" fill="#a4a5a5"/>
+      <path d="M43 45 V87 M60 45 V92 M77 45 V87"
+        stroke="#ffffff77" stroke-width="3"/>
+    `,
+
+    tree: `
+      <rect x="53" y="56" width="15" height="50"
+        rx="5" fill="#b59675"/>
+      <g fill="${c}" stroke="#979e81" stroke-width="1.5">
+        <circle cx="32" cy="49" r="23"/>
+        <circle cx="82" cy="45" r="26"/>
+        <circle cx="58" cy="27" r="28"/>
+        <circle cx="59" cy="54" r="26"/>
+      </g>
+      <g fill="#f3d2a5">
+        <circle cx="35" cy="39" r="5"/>
+        <circle cx="77" cy="29" r="5"/>
+        <circle cx="65" cy="61" r="5"/>
+      </g>
+    `,
+
+    hill: `
+      <path d="M5 95 Q22 28 56 24
+               Q91 25 115 95 Z"
+        fill="${c}" stroke="#9da68b" stroke-width="2"/>
+      <path d="M38 50 Q57 37 75 51"
+        fill="none" stroke="#ffffff66" stroke-width="4"/>
+      <g fill="#fff8e7">
+        <circle cx="33" cy="78" r="3"/>
+        <circle cx="78" cy="69" r="3"/>
+        <circle cx="87" cy="85" r="3"/>
+      </g>
+    `
+  };
+
+  const drawing =
+    shapes[item.art] ||
+    `<text x="60" y="82" font-size="68"
+      text-anchor="middle">${esc(item.icon)}</text>`;
+
+  return `
+    <svg viewBox="0 0 120 120"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true">
+
+      <g transform="translate(60 60)
+        scale(${scale}) translate(-60 -60)">
+        <ellipse cx="60" cy="108" rx="43" ry="6"
+          fill="#9a8266" opacity=".13"/>
+        ${drawing}
+      </g>
+    </svg>
+  `;
+}
+
+function mouthSVG(type) {
+  let shape = "";
+
+  if (type === "r" || type === "l") {
+    const tongue = type === "r"
+      ? `
+        <path d="M24 108 Q50 76 86 79
+                 Q114 79 126 94
+                 Q94 92 78 108 Z"
+          fill="#e4a2b1" stroke="#b87988" stroke-width="2"/>
+      `
+      : `
+        <path d="M24 108 Q76 98 109 84
+                 Q133 74 145 44
+                 L153 48 Q136 100 90 108 Z"
+          fill="#e4a2b1" stroke="#b87988" stroke-width="2"/>
+        <circle cx="149" cy="45" r="5" fill="#edce84"/>
+      `;
+
+    shape = `
+      <path d="M18 111 L18 58 Q57 22 117 23
+               Q154 23 166 48 L185 65
+               L166 74 L180 94 L160 112Z"
+        fill="#f4dace" stroke="#c39a89" stroke-width="2"/>
+      <path d="M30 69 Q70 30 144 40
+               L159 54 L159 97 L37 105Z"
+        fill="#834b59"/>
+      <rect x="148" y="41" width="15" height="24"
+        rx="3" fill="white"/>
+      <rect x="148" y="93" width="15" height="15"
+        rx="3" fill="white"/>
+      ${tongue}
+    `;
+
+  } else if (type === "f") {
+
+    shape = `
+      <path d="M20 54 Q100 12 180 54
+               Q100 71 20 54"
+        fill="#e2a0ad" stroke="#b97d89" stroke-width="2"/>
+      <path d="M25 59 Q100 42 175 59
+               Q100 95 25 59" fill="#824653"/>
+      ${Array.from({length:5}, (_,i) => `
+        <rect x="${61+i*15}" y="53"
+          width="13" height="24" rx="3"
+          fill="#fffaf3" stroke="#cfc6bd"/>
+      `).join("")}
+      <path d="M20 77 Q100 64 180 77
+               Q100 125 20 77"
+        fill="#efb4c0" stroke="#b97d89" stroke-width="2"/>
+      <path d="M100 93 V124 M91 113 L100 124 L109 113"
+        stroke="#789fc7" fill="none" stroke-width="3"/>
+    `;
+
+  } else if (type === "p") {
+
+    shape = `
+      <path d="M20 67 Q100 15 180 67
+               Q100 78 20 67"
+        fill="#e5a0ae" stroke="#b97d89" stroke-width="2"/>
+      <path d="M20 68 Q100 78 180 68
+               Q100 121 20 68"
+        fill="#efb4c0" stroke="#b97d89" stroke-width="2"/>
+      <path d="M20 67 Q100 74 180 67"
+        stroke="#784655" stroke-width="3" fill="none"/>
+      <path d="M80 105 L63 124
+               M100 105 V128
+               M120 105 L137 124"
+        stroke="#789fc7" stroke-width="3"
+        stroke-dasharray="4 4" stroke-linecap="round"/>
+    `;
+
+  } else {
+
+    const dims = {
+      ee: [67, 13],
+      ih: [48, 21],
+      ae: [49, 38],
+      uh: [39, 27]
+    }[type] || [45,25];
+
+    shape = `
+      <ellipse cx="100" cy="67"
+        rx="${dims[0]}" ry="${dims[1]}"
+        fill="#894957"
+        stroke="#e8a8b7" stroke-width="10"/>
+
+      <path d="M${100-dims[0]*.65} ${67-dims[1]*.35}
+               Q100 ${67-dims[1]*.85}
+               ${100+dims[0]*.65} ${67-dims[1]*.35}"
+        fill="none" stroke="white"
+        stroke-width="7" stroke-linecap="round"/>
+
+      ${type === "ae" || type === "uh" ? `
+        <ellipse cx="100" cy="${67+dims[1]*.52}"
+          rx="${dims[0]*.45}" ry="7"
+          fill="#e8a0b1"/>
+      ` : ""}
+    `;
+  }
+
+  return `
+    <svg viewBox="0 0 200 138"
+      role="img" aria-label="발음 기관 모식도">
+
+      <rect width="200" height="138"
+        rx="19" fill="#fffefa"/>
+
+      ${shape}
+    </svg>
+  `;
+}
+
+/* =====================================================
+   4. TEXT TO SPEECH
+===================================================== */
+
+function stopSpeech() {
+  speechVersion++;
+
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
+}
+
+function speak(text, rate = .85, done = null) {
+  if (mediaBusy()) {
+    alert("마이크 활동을 먼저 종료해 주세요.");
+    return false;
+  }
+
+  if (!("speechSynthesis" in window)) {
+    alert("이 브라우저는 음성 재생을 지원하지 않아요.");
+    return false;
+  }
+
+  stopSpeech();
+
+  const version = speechVersion;
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "en-US";
+  utterance.rate = rate;
+
+  const voices = speechSynthesis.getVoices();
+
+  utterance.voice =
+    voices.find(v => v.lang === "en-US" && v.localService) ||
+    voices.find(v => v.lang === "en-US") ||
+    voices.find(v => v.lang.startsWith("en")) ||
+    null;
+
+  utterance.onend = () => {
+    if (version === speechVersion && done) {
+      done();
+    }
+  };
+
+  utterance.onerror = event => {
+    if (
+      version === speechVersion &&
+      event.error !== "canceled" &&
+      event.error !== "interrupted"
+    ) {
+      alert("영어 음성을 재생할 수 없어요. 브라우저와 기기의 음성 설정을 확인해 주세요.");
+    }
+  };
+
+  speechSynthesis.speak(utterance);
+
+  return true;
+}
+
+function speakSequence(words, rate = .8) {
+  if (mediaBusy()) {
+    alert("마이크 활동을 먼저 종료해 주세요.");
+    return;
+  }
+
+  if (!("speechSynthesis" in window)) {
+    alert("음성 재생을 지원하지 않는 브라우저예요.");
+    return;
+  }
+
+  stopSpeech();
+
+  const version = speechVersion;
+
+  let index = 0;
+
+  function next() {
+    if (
+      version !== speechVersion ||
+      index >= words.length
+    ) return;
+
+    const utterance =
+      new SpeechSynthesisUtterance(words[index++]);
+
+    utterance.lang = "en-US";
+    utterance.rate = rate;
+
+    const voices = speechSynthesis.getVoices();
+
+    utterance.voice =
+      voices.find(v => v.lang === "en-US") ||
+      voices.find(v => v.lang.startsWith("en")) ||
+      null;
+
+    utterance.onend = () => {
+      setTimeout(next, 550);
+    };
+
+    utterance.onerror = event => {
+      if (
+        version === speechVersion &&
+        !["canceled","interrupted"].includes(event.error)
+      ) {
+        alert("음성 재생에 문제가 발생했어요.");
+      }
+    };
+
+    speechSynthesis.speak(utterance);
+  }
+
+  next();
+}
+
+if ("speechSynthesis" in window) {
+  speechSynthesis.getVoices();
+}
+
+/* =====================================================
+   5. AUDIO RECORDING
+===================================================== */
+
+function recorderHTML(key, label = "나의 발음 녹음하기") {
+  return `
+    <div class="recorder">
+
+      <strong>${label}</strong>
+
+      <div class="button-row">
+
+        <button class="btn btn-pink"
+          id="record-start-${key}"
+          onclick="startRecording('${key}')">
+          🎙️ ${recordings[key] ? "다시 녹음" : "녹음 시작"}
+        </button>
+
+        <button class="btn btn-white"
+          id="record-stop-${key}"
+          onclick="stopRecording()"
+          disabled>
+          ⏹ 녹음 종료
+        </button>
+
+      </div>
+
+      <div class="record-status"
+        id="record-status-${key}"
+        role="status">
+
+        ${recordings[key]
+          ? "녹음한 목소리를 들어 보세요."
+          : "직접 말하고 자신의 목소리를 들어 보세요."}
+
+      </div>
+
+      <div id="record-audio-${key}">
+
+        ${recordings[key]
+          ? `<audio controls src="${recordings[key]}"></audio>`
+          : ""}
+
+      </div>
+
+    </div>
+  `;
+}
+
+async function startRecording(key) {
+
+  if (mediaBusy()) {
+    alert("현재 마이크 활동을 먼저 종료해 주세요.");
+    return;
+  }
+
+  const status = $("record-status-" + key);
+  const start = $("record-start-" + key);
+
+  if (
+    !navigator.mediaDevices?.getUserMedia ||
+    !window.MediaRecorder
+  ) {
+    status.textContent =
+      "녹음을 지원하지 않는 환경이에요. 소리 내어 연습한 뒤 계속 진행할 수 있어요.";
+    return;
+  }
+
+  stopSpeech();
+
+  document.querySelectorAll("audio").forEach(a => a.pause());
+
+  const originSession = session;
+  const originScreen = screenVersion;
+  const requestVersion = ++micRequestVersion;
+
+  micPending = true;
+  start.disabled = true;
+
+  status.textContent = "마이크 연결 중...";
+
+  let stream;
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: true
+    });
+
+    if (
+      requestVersion !== micRequestVersion ||
+      originSession !== session ||
+      originScreen !== screenVersion
+    ) {
+      stream.getTracks().forEach(t => t.stop());
+      return;
+    }
+
+    micPending = false;
+
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+
+    const state = {
+      recorder,
+      stream,
+      key,
+      session: originSession,
+      screen: originScreen,
+      timer: null,
+      discard: false
+    };
+
+    recorderState = state;
+
+    recorder.ondataavailable = e => {
+      if (e.data.size) chunks.push(e.data);
+    };
+
+    recorder.onstop = () => {
+      clearTimeout(state.timer);
+
+      stream.getTracks().forEach(t => t.stop());
+
+      if (recorderState === state) {
+        recorderState = null;
+      }
+
+      if (
+        state.discard ||
+        state.session !== session ||
+        state.screen !== screenVersion
+      ) return;
+
+      const blob = new Blob(chunks, {
+        type: recorder.mimeType || "audio/webm"
+      });
+
+      const statusEl = $("record-status-" + key);
+      const startEl = $("record-start-" + key);
+      const stopEl = $("record-stop-" + key);
+
+      if (startEl) startEl.disabled = false;
+      if (stopEl) stopEl.disabled = true;
+
+      if (!blob.size) {
+        if (statusEl) {
+          statusEl.textContent =
+            "녹음된 내용이 없어요. 다시 시도해 주세요.";
+        }
+        return;
+      }
+
+      if (recordings[key]) {
+        URL.revokeObjectURL(recordings[key]);
+      }
+
+      recordings[key] = URL.createObjectURL(blob);
+
+      if ($("record-audio-" + key)) {
+        $("record-audio-" + key).innerHTML =
+          `<audio controls src="${recordings[key]}"></audio>`;
+      }
+
+      if (statusEl) {
+        statusEl.textContent =
+          "✓ 녹음 완료! 자신의 발음을 들어 보세요.";
+      }
+
+      if (startEl) {
+        startEl.textContent = "🎙️ 다시 녹음";
+      }
+    };
+
+    recorder.onerror = () => {
+      state.discard = true;
+
+      if (recorder.state !== "inactive") {
+        recorder.stop();
+      }
+
+      stream.getTracks().forEach(t => t.stop());
+
+      if (recorderState === state) {
+        recorderState = null;
+      }
+
+      if ($("record-status-" + key)) {
+        $("record-status-" + key).textContent =
+          "녹음 오류가 발생했어요. 다시 시도해 주세요.";
+      }
+
+      if ($("record-start-" + key)) {
+        $("record-start-" + key).disabled = false;
+      }
+
+      if ($("record-stop-" + key)) {
+        $("record-stop-" + key).disabled = true;
+      }
+    };
+
+    recorder.start();
+
+    $("record-stop-" + key).disabled = false;
+
+    status.textContent = "🔴 녹음 중...";
+
+    state.timer = setTimeout(
+      stopRecording,
+      key === "bonus" ? 60000 : 20000
+    );
+
+  } catch {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+    }
+
+    if (requestVersion === micRequestVersion) {
+      micPending = false;
+      recorderState = null;
+
+      if (start) start.disabled = false;
+
+      if (status) {
+        status.textContent =
+          "마이크를 사용할 수 없어요. 권한을 확인하거나 녹음 없이 연습해 주세요.";
+      }
+    }
+  }
+}
+
+function stopRecording() {
+  if (!recorderState) return;
+
+  const state = recorderState;
+
+  clearTimeout(state.timer);
+
+  if (state.recorder.state !== "inactive") {
+    state.recorder.stop();
+  }
+
+  state.stream.getTracks().forEach(t => t.stop());
+}
+
+function clearRecordings() {
+  Object.values(recordings).forEach(url => {
+    URL.revokeObjectURL(url);
+  });
+
+  recordings = {};
+}
+
+function stopAllMedia() {
+  stopSpeech();
+
+  micRequestVersion++;
+  micPending = false;
+
+  if (recorderState) {
+    const state = recorderState;
+
+    state.discard = true;
+    stopRecording();
+    recorderState = null;
+  }
+
+  abortRecognition();
+
+  document.querySelectorAll("audio").forEach(audio => {
+    audio.pause();
+  });
+}
+
+/* =====================================================
+   6. HOME
+===================================================== */
+
+function goHome() {
+  if (
+    currentView !== "home" &&
+    currentView !== "complete" &&
+    lesson
+  ) {
+    if (!confirm(
+      "홈으로 돌아갈까요? 현재 공간과 녹음 기록은 사라져요."
+    )) return;
+  }
+
+  stopAllMedia();
+  clearRecordings();
+
+  session++;
+
+  lesson = null;
+  lessonKey = "";
+  coins = 0;
+  purchased = [];
+  offer = null;
+
+  renderHome();
+}
+
+function renderHome() {
+  show(`
+    <div class="hero">
+
+      <div class="hero-copy">
+
+        <span class="tag">
+          A LITTLE PRONUNCIATION ADVENTURE
+        </span>
+
+        <h1>My Little<br>Sound World</h1>
+
+        <p>
+          영어의 소리를 배우고,
+          동물 친구에게 필요한 물건을 요청해 보세요.
+        </p>
+
+        <p>
+          여러분이 말하는 영어로
+          나만의 작은 세상이 만들어져요!
+        </p>
+
+      </div>
+
+      <div class="hero-picture">
+        <svg viewBox="0 0 480 300"
+          aria-hidden="true">
+
+          <ellipse cx="247" cy="258"
+            rx="195" ry="25" fill="#cbb69a" opacity=".2"/>
+
+          <path d="M28 170 L225 80 L455 171
+                   L250 270 Z"
+            fill="#e5dfbd" stroke="#c3b28d" stroke-width="3"/>
+
+          <path d="M28 170 V190 L250 285
+                   V270 Z"
+            fill="#c8b58e"/>
+
+          <path d="M250 270 L455 171 V191
+                   L250 285Z"
+            fill="#d6c4a1"/>
+
+          <g transform="translate(190 65)">
+            <rect x="0" y="37" width="105"
+              height="80" rx="4" fill="#fbefda"
+              stroke="#bca084" stroke-width="2"/>
+
+            <path d="M-12 42 L53 -10 L117 42 Z"
+              fill="#e4a6b7"
+              stroke="#bf8798" stroke-width="2"/>
+
+            <rect x="41" y="75" width="25"
+              height="42" rx="5" fill="#bb9777"/>
+
+            <rect x="12" y="54" width="20"
+              height="24" rx="4" fill="#bcd6ec"/>
+
+            <rect x="76" y="54" width="20"
+              height="24" rx="4" fill="#bcd6ec"/>
+          </g>
+
+          <g transform="translate(60 57)">
+            <rect x="34" y="62" width="13"
+              height="60" rx="4" fill="#b89472"/>
+
+            <g fill="#d1d4b3">
+              <circle cx="40" cy="40" r="40"/>
+              <circle cx="14" cy="47" r="26"/>
+              <circle cx="66" cy="42" r="28"/>
+            </g>
+
+            <g fill="#e3a5b2">
+              <circle cx="21" cy="30" r="7"/>
+              <circle cx="55" cy="20" r="7"/>
+              <circle cx="50" cy="55" r="7"/>
+            </g>
+          </g>
+
+          <path d="M277 236 L277 184 L244 183"
+            stroke="#f4e6c9" stroke-width="24" fill="none"/>
+
+          <g font-size="25">
+            <text x="99" y="195">🌷</text>
+            <text x="142" y="218">🌼</text>
+            <text x="349" y="199">🌷</text>
+            <text x="384" y="171">🌼</text>
+            <text x="315" y="228">🧺</text>
+          </g>
+
+          <g transform="translate(304 122) scale(.65)">
+            <rect x="17" y="0" width="22" height="53"
+              rx="11" fill="#fff5e5"
+              stroke="#b9997e" stroke-width="2"/>
+            <rect x="59" y="0" width="22" height="53"
+              rx="11" fill="#fff5e5"
+              stroke="#b9997e" stroke-width="2"/>
+            <rect x="24" y="8" width="8" height="30"
+              rx="4" fill="#edb4c4"/>
+            <rect x="66" y="8" width="8" height="30"
+              rx="4" fill="#edb4c4"/>
+            <rect x="24" y="78" width="52" height="53"
+              rx="20" fill="#94b9d6"/>
+            <ellipse cx="50" cy="60" rx="45" ry="38"
+              fill="#fff5e5" stroke="#b9997e" stroke-width="2"/>
+            <circle cx="34" cy="56" r="4" fill="#51483f"/>
+            <circle cx="66" cy="56" r="4" fill="#51483f"/>
+            <ellipse cx="23" cy="69" rx="8" ry="5" fill="#eeb6c0"/>
+            <ellipse cx="77" cy="69" rx="8" ry="5" fill="#eeb6c0"/>
+            <path d="M45 65 Q50 72 55 65"
+              fill="#a58270"/>
+            <path d="M50 70 Q45 77 40 72
+                     M50 70 Q55 77 60 72"
+              stroke="#806856" stroke-width="2" fill="none"/>
+          </g>
+
+          <g transform="translate(175 170)">
+            <ellipse cx="28" cy="16" rx="31"
+              ry="12" fill="#e8bdc5"/>
+            <path d="M2 15 V35 M52 15 V35"
+              stroke="#b89b7d" stroke-width="6"/>
+            <ellipse cx="28" cy="12" rx="31"
+              ry="12" fill="#f3d5db"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="goal-box">
+      <strong>🎯 Learning Goal</strong><br>
+      비슷한 영어 자음과 모음을 구별하고,
+      배운 소리를 활용하여 내가 원하는 의미를
+      영어 문장으로 전달할 수 있어요.
+    </div>
+
+    <h2 class="section-heading">
+      Choose Your World
+    </h2>
+
+    <p class="muted">
+      만들고 싶은 공간과 연습할 소리를 선택하세요.
+    </p>
+
+    <div class="world-grid">
+
+      ${Object.entries(DATA).map(([key,d]) => `
+        <button class="world-card"
+          onclick="startLesson('${key}')">
+
+          <div class="world-preview">
+            ${sceneSVG(key)}
+          </div>
+
+          <div class="world-info">
+
+            <span class="tag">${d.category}</span>
+
+            <h3>${d.title}</h3>
+
+            <p class="muted small">${d.korean}</p>
+
+            <div class="phoneme-label">
+              ${d.sounds.join(" · ")}
+            </div>
+
+            <p class="small">
+              ${d.pairs[0][0].word}
+              /
+              ${d.pairs[0][1].word}
+            </p>
+
+            ${completed[key]
+              ? `<span class="complete-tag">
+                  ⭐ 이전에 완료한 공간
+                </span>`
+              : `<strong style="color:#a17b55;">
+                  Start →
+                </strong>`}
+
+          </div>
+        </button>
+      `).join("")}
+
+    </div>
+
+    <div class="panel center">
+
+      <h3>How to Play</h3>
+
+      <div class="progress" style="margin-bottom:0;">
+
+        <div class="progress-step active">
+          <span>🧪</span>
+          소리 탐구
+        </div>
+
+        <div class="progress-step active">
+          <span>🎙️</span>
+          발음 연습
+        </div>
+
+        <div class="progress-step active">
+          <span>🏡</span>
+          나만의 공간 만들기
+        </div>
+
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>사용 안내</strong><br>
+      모델 발음은 기기의 영어 음성 합성 기능을 사용해요.
+      녹음은 현재 브라우저 메모리에서만 비교용으로 사용하며
+      학습을 종료하면 지워져요.
+      음성 인식은 브라우저 제공자의 온라인 서비스를
+      사용할 수 있으므로 교사 또는 보호자의 안내에 따라
+      선택적으로 사용해 주세요.
+      <br><br>
+      음성 인식 기능이 지원되지 않거나 사용을 원하지 않는 경우,
+      직접 발화한 후 수동 확인 모드로 활동을 진행할 수 있어요.
+    </div>
+  `, "home");
+}
+
+function startLesson(key) {
+  stopAllMedia();
+  clearRecordings();
+
+  session++;
+
+  lessonKey = key;
+  lesson = DATA[key];
+
+  stage = 0;
+  coins = 0;
+  qIndex = 0;
+  studioIndex = 0;
+
+  purchased = [];
+  nextItemId = 1;
+  selectedItemId = null;
+
+  plan = {
+    word: null,
+    color: "natural",
+    size: "normal"
+  };
+
+  offer = null;
+  report = createReport();
+
+  renderLab();
+}
+
+/* =====================================================
+   7. ACTIVITY 1 — SOUND LAB
+===================================================== */
+
+function renderLab() {
+
+  answered = false;
+
+  const pair = lesson.pairs[0];
+  const ex = lesson.experiment;
+
+  activityLayout(
+    "🧪 Sound Lab",
+    "두 소리의 차이를 발견하고 직접 실험해 보세요.",
+
+    `
+      ${friendMessage(lesson.intro)}
+
+      <div class="goal-box">
+        <strong>오늘의 학습 목표</strong><br>
+        ${lesson.goal}
+      </div>
+
+      <div class="two-col">
+
+        ${pair.map((item,i) => `
+          <div class="sound-card ${i ? "second" : ""}">
+
+            <div class="sound-symbol">
+              ${lesson.sounds[i]}
+            </div>
+
+            <span class="word-icon">${item.icon}</span>
+
+            <div class="word">${item.word}</div>
+
+            <p class="small muted">${item.meaning}</p>
+
+            <button class="btn btn-white"
+              onclick="speak('${item.word}',.8)">
+              🔊 Listen
+            </button>
+
+          </div>
+        `).join("")}
+
+      </div>
+
+      <div class="button-row">
+
+        <button class="btn btn-blue"
+          onclick='speakSequence(${JSON.stringify([
+            pair[0].word,
+            pair[1].word
+          ])})'>
+          🎧 두 소리 비교하기
+        </button>
+
+      </div>
+
+      <div class="experiment">
+
+        <h3>🔬 Try It!</h3>
+
+        <p>${ex.instruction}</p>
+
+        <strong>${ex.question}</strong>
+
+        <div class="answer-options"
+          style="margin-top:13px;">
+
+          ${ex.options.map((option,i) => `
+            <button class="answer-button"
+              id="experiment-${i}"
+              onclick="checkExperiment(${i})">
+              ${option}
+            </button>
+          `).join("")}
+
+        </div>
+
+        <div id="experimentFeedback"
+          class="feedback"
+          role="status">
+        </div>
+
+      </div>
+
+      <div id="labReveal" class="hidden">
+
+        <h3 class="section-heading">
+          💡 The Secret of Sounds
+        </h3>
+
+        <div class="two-col">
+
+          ${lesson.tips.map((tip,i) => `
+            <div class="sound-card ${i ? "second" : ""}">
+
+              <div class="sound-symbol">
+                ${lesson.sounds[i]}
+              </div>
+
+              <div class="mouth-picture">
+                ${mouthSVG(tip.type)}
+              </div>
+
+              <p>${tip.detail}</p>
+
+              <button class="btn btn-white"
+                onclick="speak('${pair[i].word}',.8)">
+                🔊 ${pair[i].word}
+              </button>
+
+            </div>
+          `).join("")}
+
+        </div>
+
+        <div class="notice">
+          위 그림은 발음할 때의 입 모양과 움직임을
+          단순화한 모식도예요.
+          실제 발음 기관의 모습과 움직임에는 개인차가 있어요.
+          모음은 입 모양만으로 결정되지 않으므로
+          소리와 혀의 위치도 함께 확인해 보세요.
+        </div>
+
+        <div class="button-row">
+
+          <button class="btn btn-blue"
+            onclick="initListening()">
+            소리 구별하기 →
+          </button>
+
+        </div>
+      </div>
+    `,
+
+    "lab"
+  );
+}
+
+function checkExperiment(index) {
+  if (answered) return;
+
+  const ex = lesson.experiment;
+
+  if (index !== ex.correct) {
+    $("experiment-" + index).classList.add("incorrect");
+    $("experiment-" + index).disabled = true;
+
+    setFeedback(
+      "experimentFeedback",
+      "다시 한번 직접 발음해 보고 소리의 차이를 느껴 보세요!",
+      "retry"
+    );
+
+    return;
+  }
+
+  answered = true;
+
+  $("experiment-" + index).classList.add("correct");
+
+  document.querySelectorAll(".answer-button").forEach(b => {
+    b.disabled = true;
+  });
+
+  addCoins(30);
+
+  setFeedback(
+    "experimentFeedback",
+    ex.explanation + " 🪙 30코인을 얻었어요!"
+  );
+
+  $("labReveal").classList.remove("hidden");
+}
+
+/* =====================================================
+   8. LISTENING — ONLY 3 QUESTIONS
+===================================================== */
+
+function initListening() {
+  if (currentView !== "lab" || !answered) return;
+
+  const targets = shuffle([
+    0, 1, Math.random() < .5 ? 0 : 1
+  ]);
+
+  questions = shuffle(lesson.pairs).map((pair,i) => ({
+    pair,
+    target: targets[i],
+    options: shuffle(pair.map((item,index) => ({
+      ...item,
+      originalIndex: index
+    })))
+  }));
+
+  qIndex = 0;
+
+  renderListening();
+}
+
+function renderListening() {
+  answered = false;
+  wrongAttempt = false;
+  listened = false;
+
+  const q = questions[qIndex];
+
+  activityLayout(
+    "🎧 Sound Lab: Listen & Choose",
+    "들리는 영어 단어에 해당하는 그림을 선택하세요.",
+
+    `
+      ${friendMessage(
+        "상점에 가기 전에 소리를 정확하게 구별할 수 있는지 확인해 보자!"
+      )}
+
+      <div class="center">
+
+        <span class="tag">
+          QUESTION ${qIndex+1} / 3
+        </span>
+
+        <button class="speaker-button"
+          aria-label="목표 단어 듣기"
+          onclick="playListening(false)">
+          🔊
+        </button>
+
+        <button class="btn btn-white"
+          onclick="playListening(true)">
+          🐢 천천히 듣기
+        </button>
+
+      </div>
+
+      <div class="listening-grid">
+
+        ${q.options.map((item,i) => `
+          <button class="listening-choice"
+            id="listen-choice-${i}"
+            onclick="checkListening(${i})"
+            disabled>
+
+            <span class="word-icon">
+              ${item.icon}
+            </span>
+
+            <strong>${item.meaning}</strong>
+
+            <div class="word hidden"
+              id="listen-word-${i}"
+              style="margin-top:8px;">
+              ${item.word}
+            </div>
+
+          </button>
+        `).join("")}
+
+      </div>
+
+      <div id="listenFeedback"
+        class="feedback" role="status">
+      </div>
+
+      <div class="button-row hidden"
+        id="listenNext">
+
+        <button class="btn btn-blue"
+          onclick="nextListening()">
+
+          ${qIndex === 2
+            ? "Speaking Studio →"
+            : "다음 문제 →"}
+
+        </button>
+
+      </div>
+
+      <div class="button-row">
+        <button class="btn btn-white btn-small"
+          onclick="skipListening()">
+          음성 재생이 어려워요
+        </button>
+      </div>
+
+    `,
+
+    "listening"
+  );
+}
+
+function playListening(slow) {
+  const q = questions[qIndex];
+
+  const origin = screenVersion;
+
+  speak(
+    q.pair[q.target].word,
+    slow ? .65 : .9,
+    () => {
+      if (
+        screenVersion !== origin ||
+        answered ||
+        currentView !== "listening"
+      ) return;
+
+      listened = true;
+
+      q.options.forEach((item,i) => {
+        const b = $("listen-choice-" + i);
+
+        if (b && !b.classList.contains("incorrect")) {
+          b.disabled = false;
+        }
+      });
+    }
+  );
+}
+
+function checkListening(index) {
+  if (!listened || answered) return;
+
+  const q = questions[qIndex];
+
+  if (q.options[index].originalIndex !== q.target) {
+    wrongAttempt = true;
+
+    $("listen-choice-" + index)
+      .classList.add("incorrect");
+
+    $("listen-choice-" + index).disabled = true;
+
+    setFeedback(
+      "listenFeedback",
+      "비슷하게 들리는 소리예요. 다시 듣고 차이를 찾아보세요!",
+      "retry"
+    );
+
+    return;
+  }
+
+  answered = true;
+
+  report.listeningTotal++;
+
+  if (!wrongAttempt) {
+    report.listeningCorrect++;
+  }
+
+  addCoins(10);
+
+  q.options.forEach((item,i) => {
+    $("listen-choice-" + i).disabled = true;
+
+    $("listen-word-" + i)
+      .classList.remove("hidden");
+  });
+
+  $("listen-choice-" + index)
+    .classList.add("correct");
+
+  const target = q.pair[q.target];
+
+  setFeedback(
+    "listenFeedback",
+    `정답! ${target.word} (${target.meaning})였어요. 🪙 +10`
+  );
+
+  $("listenNext").classList.remove("hidden");
+}
+
+function skipListening() {
+  if (answered) return;
+
+  if (!confirm(
+    "이 문항을 채점하지 않고 넘어갈까요?"
+  )) return;
+
+  answered = true;
+
+  document.querySelectorAll(".listening-choice").forEach(b => {
+    b.disabled = true;
+  });
+
+  setFeedback(
+    "listenFeedback",
+    "이 문항은 듣기 결과에 포함하지 않아요.",
+    "neutral"
+  );
+
+  $("listenNext").classList.remove("hidden");
+}
+
+function nextListening() {
+  if (!answered) return;
+
+  qIndex++;
+
+  if (qIndex >= 3) {
+    stage = 1;
+    studioIndex = 0;
+    renderStudio();
+  } else {
+    renderListening();
+  }
+}
+
+/* =====================================================
+   9. ACTIVITY 2 — SPEAKING STUDIO
+===================================================== */
+
+function renderStudio() {
+
+  const pair = lesson.pairs[studioIndex];
+
+  activityLayout(
+    "🎙️ Speaking Studio",
+    "두 단어를 듣고 직접 발음한 뒤 자신의 목소리와 비교하세요.",
+
+    `
+      ${friendMessage(
+        "이제 상점에서 영어로 말할 준비를 해 보자. 두 단어를 다르게 발음하는 것이 중요해!"
+      )}
+
+      <div class="center"
+        style="margin-bottom:15px;">
+        <span class="tag">
+          PRACTICE ${studioIndex+1} / 2
+        </span>
+      </div>
+
+      <div class="two-col">
+
+        ${pair.map((item,i) => `
+          <div class="sound-card ${i ? "second" : ""}">
+
+            <div class="sound-symbol">
+              ${lesson.sounds[i]}
+            </div>
+
+            <span class="word-icon">${item.icon}</span>
+
+            <div class="word">${item.word}</div>
+
+            <p class="small muted">
+              ${item.meaning}
+            </p>
+
+            <button class="btn btn-white"
+              onclick="speak('${item.word}',.8)">
+              🔊 Listen
+            </button>
+
+            <p class="small"
+              style="margin:14px 0 0;">
+              ${lesson.tips[i].short}
+            </p>
+
+          </div>
+        `).join("")}
+
+      </div>
+
+      <div class="button-row">
+
+        <button class="btn btn-blue"
+          onclick='speakSequence(${JSON.stringify([
+            pair[0].word,
+            pair[1].word
+          ])},.8)'>
+          🎧 두 단어 연속 듣기
+        </button>
+
+      </div>
+
+      <div class="goal-box center">
+
+        <span class="small">Your turn!</span>
+
+        <div class="word"
+          style="margin:8px 0;">
+          ${pair[0].word} · ${pair[1].word}
+        </div>
+
+        두 소리가 구별되도록 발음해 보세요.
+
+      </div>
+
+      ${recorderHTML(
+        "studio" + studioIndex,
+        "내 목소리 듣고 비교하기"
+      )}
+
+      <details>
+
+        <summary>💡 발음이 어려울 때</summary>
+
+        ${lesson.tips.map((tip,i) => `
+          <p style="margin-top:12px;">
+            <strong>${lesson.sounds[i]}</strong>
+            — ${tip.detail}
+          </p>
+        `).join("")}
+
+        <p>
+          자신의 녹음을 들어 보고
+          두 단어의 소리가 잘 구별되는지 확인해요.
+          필요하면 다시 녹음해 보세요.
+        </p>
+
+      </details>
+
+      <label class="check-line">
+
+        <input type="checkbox"
+          id="studioPracticeDone">
+
+        두 단어를 직접 발음하고 소리의 차이를 확인했어요.
+
+      </label>
+
+      <div class="button-row">
+
+        <button class="btn btn-blue"
+          onclick="nextStudio()">
+
+          ${studioIndex === 1
+            ? "나만의 세상 만들러 가기 🏡"
+            : "다음 발음 연습 →"}
+
+        </button>
+
+      </div>
+
+      <p class="small muted center">
+        녹음은 선택 사항이에요.
+        마이크 없이도 직접 소리 내어 연습할 수 있어요.
+      </p>
+    `,
+
+    "studio"
+  );
+}
+
+function nextStudio() {
+  if (mediaBusy()) {
+    alert("마이크 활동을 먼저 종료해 주세요.");
+    return;
+  }
+
+  if (!$("studioPracticeDone").checked) {
+    alert("두 단어를 직접 발음한 후 체크해 주세요.");
+    return;
+  }
+
+  report.studioCompleted++;
+  addCoins(20);
+
+  studioIndex++;
+
+  if (studioIndex >= 2) {
+
+    stage = 2;
+
+    /*
+      Normal total:
+      experiment 30
+      listening 30
+      studio 40
+      = 100 coins
+
+      Minimum accessibility allowance guarantees
+      two contrastive purchases when audio is unavailable.
+    */
+
+    if (coins < 60) {
+      coins = 60;
+    }
+
+    renderWorld();
+
+  } else {
+    renderStudio();
+  }
+}
+
+/* =====================================================
+   10. ACTIVITY 3 — MY LITTLE SOUND WORLD
+===================================================== */
+
+function renderWorld() {
+  show(`
+    ${progressHTML()}
+
+    <div class="panel"
+      style="margin-bottom:20px;">
+
+      <span class="tag">
+        ACTIVITY 3 · GUIDED SPEAKING
+      </span>
+
+      <h2 style="margin:10px 0;">
+        🏡 My Little Sound World
+      </h2>
+
+      <p style="margin-bottom:0;">
+        원하는 물건을 영어 문장으로 주문하고,
+        동물 친구가 알아들은 물건을 확인한 뒤
+        나만의 공간을 꾸며 보세요.
+      </p>
+
+      ${friendMessage(
+        "발음 연습을 마쳤구나! 이제 모은 코인으로 원하는 물건을 골라 봐. 무엇을 살지는 네가 결정하는 거야!"
+      )}
+
+      <div class="goal-box"
+        style="margin-bottom:0;">
+
+        <strong>오늘의 꾸미기 미션</strong><br>
+
+        ${lesson.sounds[0]} 소리가 들어간 물건과
+        ${lesson.sounds[1]} 소리가 들어간 물건을
+        각각 하나 이상 영어 문장으로 주문하고 배치해요.
+
+        그 외의 물건은 자유롭게 선택할 수 있어요.
+
+      </div>
+
+    </div>
+
+    <div class="world-layout">
+
+      <!-- LEFT: MY WORLD -->
+
+      <div class="world-panel">
+
+        <div class="world-heading">
+
+          <h2>${lesson.title}</h2>
+
+          <span class="tag">
+            MY WORLD
+          </span>
+
+        </div>
+
+        <div class="world-scene"
+          id="worldScene">
+
+          <div class="scene-bg">
+            ${sceneSVG(lessonKey)}
+          </div>
+
+          <div class="placement-grid"
+            id="placementGrid">
+          </div>
+
+        </div>
+
+        <div id="placementMessage"
+          class="world-caption">
+          물건을 구매한 뒤 원하는 자리에 배치하세요.
+        </div>
+
+        <div class="inventory-heading">
+          🎒 My Inventory
+        </div>
+
+        <div id="inventory"
+          class="inventory">
+        </div>
+
+        <div class="button-row"
+          style="margin:12px 0;">
+
+          <button class="btn btn-white btn-small"
+            onclick="returnSelectedItem()">
+            선택한 물건 보관하기
+          </button>
+
+          <button class="btn btn-white btn-small"
+            onclick="clearSelection()">
+            선택 취소
+          </button>
+
+        </div>
+
+        <div class="collection-progress"
+          id="collectionProgress">
+        </div>
+
+        <div class="notice">
+          배치 방법: 인벤토리에서 물건을 선택한 후
+          공간의 빈 자리를 클릭하세요.
+          컴퓨터에서는 드래그 앤 드롭도 가능해요.
+          배치한 물건은 다시 선택하여 옮길 수 있어요.
+        </div>
+
+      </div>
+
+      <!-- RIGHT: SOUND MARKET -->
+
+      <div class="shop-panel">
+
+        <div class="shop-heading">
+
+          <h2>🏪 Sound Market</h2>
+
+          <div class="coin-badge">
+            🪙 <span id="shopCoins">${coins}</span>
+          </div>
+
+        </div>
+
+        <div class="shopkeeper">
+
+          ${animalSVG(lesson.animal)}
+
+          <div>
+            <div class="friend-name">
+              ${lesson.friend}
+            </div>
+
+            <p id="shopkeeperText">
+              What would you like?
+            </p>
+          </div>
+
+        </div>
+
+        <button class="btn btn-white btn-small"
+          onclick="speak('What would you like?',.9)">
+          🔊 친구의 질문 듣기
+        </button>
+
+        <p class="small muted"
+          style="margin:14px 0 9px;">
+          원하는 물건을 선택하세요.
+          선택만으로는 구매되지 않아요.
+        </p>
+
+        <div class="shop-grid"
+          id="shopGrid">
+        </div>
+
+        <div class="selection-heading">
+          🎨 Color · 선택 사항
+        </div>
+
+        <div class="color-row"
+          id="colorRow">
+        </div>
+
+        <div class="selection-heading">
+          📏 Size · 선택 사항
+        </div>
+
+        <div class="size-row"
+          id="sizeRow">
+        </div>
+
+        <div class="private-plan"
+          id="privatePlan">
+        </div>
+
+        <details id="speakingHelp">
+
+          <summary>
+            💬 Speaking Support
+          </summary>
+
+          <div class="frame">
+            I want a ______.
+          </div>
+
+          <div class="frame">
+            I'd like a ______, please.
+          </div>
+
+          <div class="frame">
+            Can I have a ______ ______ ______?
+          </div>
+
+          <p class="small">
+            크기 + 색깔 + 물건 순으로 말할 수 있어요.
+            예: a small pink flower
+          </p>
+
+          <p class="small">
+            위의 표현을 사용하거나
+            자신만의 문장으로 주문해도 좋아요.
+          </p>
+
+          <div id="soundHint"
+            class="small">
+          </div>
+
+        </details>
+
+        <label class="check-line consent">
+
+          <input type="checkbox"
+            id="voiceConsent">
+
+          교사 또는 보호자의 안내에 따라
+          브라우저의 음성 인식 서비스를 사용하겠습니다.
+
+        </label>
+
+        <button class="speak-btn"
+          id="speakButton"
+          onclick="toggleRecognition()">
+
+          🎙️ 영어 문장으로 주문하기
+
+        </button>
+
+        <div id="speechStatus"
+          class="small muted center"
+          style="margin-top:9px;"
+          role="status">
+
+          원하는 물건을 선택하고 영어로 말해 보세요.
+
+        </div>
+
+        <div id="heardText"
+          class="transcript hidden"
+          aria-live="polite">
+        </div>
+
+        <div id="marketFeedback"
+          class="feedback"
+          role="status">
+        </div>
+
+        <div id="offerArea"></div>
+
+        <div id="repairArea"></div>
+
+        <div class="button-row">
+
+          <button class="btn btn-white btn-small"
+            onclick="showManualOrder()">
+
+            마이크 없이 직접 확인하기
+
+          </button>
+
+        </div>
+
+        <div id="manualArea"
+          class="hidden">
+        </div>
+
+        <div class="notice">
+
+          음성 인식 결과는 실제 발음 점수가 아니에요.
+          정확하게 발음해도 다르게 인식될 수 있어요.
+          원하는 물건과 다르면 다시 말하거나
+          직접 확인 모드를 사용할 수 있어요.
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- OPTIONAL BONUS -->
+
+    <div class="bonus-panel"
+      id="bonusPanel">
+
+      <div class="world-heading">
+
+        <h3 style="margin:0;">
+          🎤 Bonus · My World Tour
+        </h3>
+
+        <span class="tag">
+          OPTIONAL
+        </span>
+
+      </div>
+
+      <p>
+        꾸미기를 마쳤다면 자신이 만든 공간을
+        영어로 소개해 보세요.
+      </p>
+
+      <details>
+
+        <summary>
+          도전하기 / Speaking Support
+        </summary>
+
+        <p style="margin-top:12px;">
+          공간을 보면서 배치한 물건을 활용해
+          영어로 2~3문장을 말해 보세요.
+        </p>
+
+        <div class="frame">
+          Welcome to my ______!
+        </div>
+
+        <div class="frame">
+          There is a ______.
+        </div>
+
+        <div class="frame">
+          I have a ______.
+        </div>
+
+        <div class="frame">
+          My favorite thing is my ______.
+        </div>
+
+        <p class="small muted">
+          문장 틀은 필요한 경우에만 사용하세요.
+          목표 소리가 포함된 물건을
+          두 가지 이상 소개해 보세요.
+        </p>
+
+        ${recorderHTML(
+          "bonus",
+          "My World Tour 녹음하기"
+        )}
+
+        <label class="check-line">
+
+          <input type="checkbox"
+            id="bonusDone"
+            onchange="report.bonus=this.checked">
+
+          내가 만든 공간을 영어로 소개했어요.
+
+        </label>
+
+      </details>
+
+    </div>
+
+    <div class="panel center"
+      style="margin-top:20px;">
+
+      <h3>Ready to finish?</h3>
+
+      <p id="finishStatus">
+        두 종류의 목표 소리가 포함된 물건을
+        모두 배치하면 활동을 마칠 수 있어요.
+      </p>
+
+      <button class="btn btn-blue"
+        id="finishButton"
+        onclick="renderReflection()"
+        disabled>
+
+        나만의 세상 완성하기 →
+
+      </button>
+
+    </div>
+
+  `, "world");
+
+  renderShop();
+  renderCustomOptions();
+  renderPrivatePlan();
+  updateWorld();
+}
+
+/* =====================================================
+   11. MARKET UI & PRIVATE CHOICE
+===================================================== */
+
+function renderShop() {
+  const root = $("shopGrid");
+
+  if (!root) return;
+
+  root.innerHTML = lesson.shop.map(item => `
+    <div class="shop-item
+      ${plan.word === item.word ? "selected" : ""}">
+
+      <button
+        style="
+          border:0;
+          background:none;
+          padding:0;
+          width:100%;
+        "
+        onclick="chooseWord('${item.word}')"
+        ${mediaBusy() || offer ? "disabled" : ""}
+        aria-label="${esc(item.word)} 선택">
+
+        <div class="shop-item-art">
+          ${itemSVG(item)}
+        </div>
+
+        <div class="shop-word">
+          ${item.word}
+        </div>
+
+        <div class="shop-meaning">
+          ${item.meaning}
+        </div>
+
+        <div class="shop-price">
+          🪙 ${PRICE}
+        </div>
+
+      </button>
+
+      <button class="shop-audio"
+        onclick="speak('${item.word}',.8)"
+        aria-label="${item.word} 발음 듣기">
+        🔊
+      </button>
+
+    </div>
+  `).join("");
+}
+
+function renderCustomOptions() {
+  const colorRoot = $("colorRow");
+  const sizeRoot = $("sizeRow");
+
+  if (!colorRoot || !sizeRoot) return;
+
+  colorRoot.innerHTML =
+    Object.entries(COLORS).map(([key,value]) => `
+      <button class="color-btn
+        ${plan.color === key ? "selected" : ""}"
+        onclick="chooseColor('${key}')"
+        ${recognizing || offer ? "disabled" : ""}>
+
+        ${value.hex
+          ? `<span class="color-dot"
+              style="background:${value.hex}">
+            </span>`
+          : ""}
+
+        ${value.label}
+
+      </button>
+    `).join("");
+
+  sizeRoot.innerHTML = [
+    ["normal","기본"],
+    ["small","small"],
+    ["big","big"]
+  ].map(([key,label]) => `
+    <button class="size-btn
+      ${plan.size === key ? "selected" : ""}"
+      onclick="chooseSize('${key}')"
+      ${recognizing || offer ? "disabled" : ""}>
+      ${label}
+    </button>
+  `).join("");
+}
+
+function changePlanAllowed() {
+  if (recognizing || offer || mediaBusy()) {
+    alert(
+      "진행 중인 주문이나 마이크 활동을 먼저 마쳐 주세요."
+    );
+
+    return false;
+  }
+
+  return true;
+}
+
+function chooseWord(word) {
+  if (!changePlanAllowed()) return;
+
+  if (!lesson.shop.some(item => item.word === word)) {
+    return;
+  }
+
+  plan.word = word;
+
+  refreshPlan();
+}
+
+function chooseColor(color) {
+  if (!changePlanAllowed()) return;
+  if (!(color in COLORS)) return;
+
+  plan.color = color;
+
+  refreshPlan();
+}
+
+function chooseSize(size) {
+  if (!changePlanAllowed()) return;
+
+  if (!["normal","small","big"].includes(size)) {
+    return;
+  }
+
+  plan.size = size;
+
+  refreshPlan();
+}
+
+function refreshPlan() {
+  renderShop();
+  renderCustomOptions();
+  renderPrivatePlan();
+
+  $("repairArea").innerHTML = "";
+  $("manualArea").classList.add("hidden");
+
+  setFeedback("marketFeedback", "", "neutral");
+}
+
+function getItem(word) {
+  return lesson?.shop.find(item => item.word === word);
+}
+
+function phraseFor(config) {
+  return [
+    config.size !== "normal" ? config.size : "",
+    config.color !== "natural" ? config.color : "",
+    config.word
+  ].filter(Boolean).join(" ");
+}
+
+function renderPrivatePlan() {
+  const root = $("privatePlan");
+
+  if (!root) return;
+
+  if (!plan.word) {
+
+    root.innerHTML = `
+      <strong>🤫 My Choice</strong>
+
+      <p style="margin:5px 0 0;">
+        원하는 물건을 먼저 골라 보세요.
+        색깔과 크기는 자유롭게 추가할 수 있어요.
+      </p>
+    `;
+
+    $("soundHint").textContent = "";
+
+    return;
+  }
+
+  const item = getItem(plan.word);
+
+  root.innerHTML = `
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:12px;
+    ">
+
+      <div style="
+        width:72px;
+        height:72px;
+        flex-shrink:0;
+      ">
+        ${itemSVG(item,plan.color,plan.size)}
+      </div>
+
+      <div>
+
+        <strong>🤫 My Choice</strong>
+
+        <div>
+          물건: ${item.word}
+        </div>
+
+        <div class="small muted">
+
+          ${plan.color !== "natural"
+            ? "색깔: " + plan.color + " · "
+            : ""}
+
+          ${plan.size !== "normal"
+            ? "크기: " + plan.size
+            : "원하는 문장으로 말해 보세요."}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <p class="small"
+      style="margin:9px 0 0;">
+
+      완성된 문장을 읽는 것이 아니라,
+      위 단어를 활용해 직접 문장을 만들어 말해요.
+
+    </p>
+  `;
+
+  $("soundHint").innerHTML = `
+    <strong>Sound Hint</strong><br>
+    ${lesson.sounds[item.group]}:
+    ${lesson.tips[item.group].short}
+
+    <div class="button-row"
+      style="justify-content:flex-start;">
+
+      <button class="btn btn-white btn-small"
+        onclick="speak('${item.word}',.8)">
+        🔊 목표 단어 듣기
+      </button>
+
+    </div>
+  `;
+}
+
+/* =====================================================
+   12. SPEECH RECOGNITION
+===================================================== */
+
+function toggleRecognition() {
+  if (recognizing && recognition) {
+    try {
+      recognition.stop();
+    } catch {}
+    return;
+  }
+
+  startRecognition();
+}
+
+function startRecognition() {
+  if (currentView !== "world" || offer) return;
+
+  if (mediaBusy()) {
+    alert("진행 중인 마이크 활동을 먼저 종료해 주세요.");
+    return;
+  }
+
+  if (!plan.word) {
+    setFeedback(
+      "marketFeedback",
+      "먼저 원하는 물건을 선택하세요!",
+      "retry"
+    );
+    return;
+  }
+
+  if (coins < PRICE) {
+    setFeedback(
+      "marketFeedback",
+      "코인을 모두 사용했어요. 구매한 물건으로 공간을 꾸며 보세요.",
+      "neutral"
+    );
+    return;
+  }
+
+  if (!$("voiceConsent").checked) {
+    setFeedback(
+      "marketFeedback",
+      "음성 인식 사용 동의를 확인하거나 직접 확인 모드를 이용해 주세요.",
+      "neutral"
+    );
+    return;
+  }
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+
+    setFeedback(
+      "marketFeedback",
+      "이 브라우저에서는 음성 인식을 지원하지 않아요. 직접 확인 모드로 진행할 수 있어요.",
+      "neutral"
+    );
+
+    showManualOrder();
+    return;
+  }
+
+  stopSpeech();
+
+  document.querySelectorAll("audio").forEach(a => a.pause());
+
+  const instance = new SpeechRecognition();
+
+  instance.lang = "en-US";
+  instance.continuous = false;
+  instance.interimResults = false;
+  instance.maxAlternatives = 1;
+
+  recognition = instance;
+  recognizing = true;
+
+  let receivedResult = false;
+
+  const originSession = session;
+  const originScreen = screenVersion;
+
+  $("manualArea").classList.add("hidden");
+
+  $("speakButton").classList.add("recording");
+  $("speakButton").textContent =
+    "⏹ 말하기 종료";
+
+  $("speechStatus").textContent =
+    "마이크 연결 중...";
+
+  $("heardText").classList.add("hidden");
+
+  setFeedback("marketFeedback", "", "neutral");
+
+  renderShop();
+  renderCustomOptions();
+
+  function stillActive() {
+    return (
+      recognition === instance &&
+      session === originSession &&
+      screenVersion === originScreen
+    );
+  }
+
+  instance.onstart = () => {
+    if (!stillActive()) return;
+
+    $("speechStatus").textContent =
+      "🎙️ 지금 영어 문장으로 말해 주세요!";
+  };
+
+  instance.onresult = event => {
+    if (!stillActive()) return;
+
+    receivedResult = true;
+
+    const transcript =
+      event.results[event.resultIndex][0].transcript;
+
+    $("heardText").classList.remove("hidden");
+
+    $("heardText").textContent =
+      `${lesson.friend} heard: "${transcript}"`;
+
+    processOrder(transcript);
+  };
+
+  instance.onerror = event => {
+    if (!stillActive()) return;
+
+    const errors = {
+      "no-speech":
+        "소리를 듣지 못했어요. 다시 말해 주세요.",
+      "not-allowed":
+        "마이크 권한이 허용되지 않았어요.",
+      "network":
+        "음성 인식 연결에 문제가 발생했어요.",
+      "audio-capture":
+        "마이크를 찾을 수 없어요."
+    };
+
+    if (event.error !== "aborted") {
+
+      setFeedback(
+        "marketFeedback",
+        errors[event.error] ||
+          "음성 인식에 문제가 발생했어요.",
+        "neutral"
+      );
+    }
+  };
+
+  instance.onend = () => {
+    if (!stillActive()) return;
+
+    clearTimeout(recognitionTimer);
+
+    recognition = null;
+    recognizing = false;
+
+    resetSpeechButton();
+
+    if (!receivedResult) {
+      $("speechStatus").textContent =
+        "다시 말하거나 직접 확인할 수 있어요.";
+    }
+
+    renderShop();
+    renderCustomOptions();
+    renderOffer();
+  };
+
+  try {
+    instance.start();
+
+    recognitionTimer = setTimeout(() => {
+      if (recognition === instance) {
+        try {
+          instance.stop();
+        } catch {}
+      }
+    }, 15000);
+
+  } catch {
+
+    recognition = null;
+    recognizing = false;
+
+    resetSpeechButton();
+    renderShop();
+    renderCustomOptions();
+
+    setFeedback(
+      "marketFeedback",
+      "음성 인식을 시작하지 못했어요. 직접 확인 모드를 이용해 주세요.",
+      "neutral"
+    );
+  }
+}
+
+function resetSpeechButton() {
+  const button = $("speakButton");
+
+  if (!button) return;
+
+  button.classList.remove("recording");
+
+  button.textContent =
+    "🎙️ 영어 문장으로 주문하기";
+
+  button.disabled =
+    Boolean(offer) || coins < PRICE;
+}
+
+function abortRecognition() {
+  clearTimeout(recognitionTimer);
+
+  if (recognition) {
+
+    const previous = recognition;
+
+    recognition = null;
+    recognizing = false;
+
+    previous.onstart = null;
+    previous.onresult = null;
+    previous.onerror = null;
+    previous.onend = null;
+
+    try {
+      previous.abort();
+    } catch {}
+  }
+
+  recognizing = false;
+}
+
+/* =====================================================
+   13. ORDER INTERPRETATION
+   No phoneme accuracy score is generated.
+===================================================== */
+
+function normalizeSpeech(text) {
+  return String(text)
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/i'd/g, "i would")
+    .replace(/don't/g, "do not")
+    .replace(/can't/g, "can not")
+    .replace(/[^a-z'\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function parseOrder(transcript) {
+
+  const text = normalizeSpeech(transcript);
+
+  /*
+    Support common positive orders and repair expressions.
+
+    Examples:
+    I want a cap.
+    Can I have a big blue cup?
+    No, I want a cap, not a cup.
+    Not a cup. I want a cap.
+
+    This is keyword-based interpretation, not
+    unrestricted natural-language understanding.
+  */
+
+  const positiveMarkers = [
+    ...text.matchAll(
+      /\b(?:i want|i would like|i need|can i have|could i have|may i have|please give me|give me)\b/g
+    )
+  ];
+
+  let clause = text;
+
+  if (positiveMarkers.length) {
+
+    const marker =
+      positiveMarkers[positiveMarkers.length-1];
+
+    clause = text.slice(marker.index);
+  }
+
+  clause = clause
+    .split(/\b(?:not|instead of|rather than)\b/)[0]
+    .trim();
+
+  const words = clause.split(/\s+/).filter(Boolean);
+
+  const matchingItems = lesson.shop.filter(item => {
+
+    if (words.includes(item.word)) return true;
+
+    const plurals = {
+      sheep: "sheep",
+      fish: "fish"
+    };
+
+    const plural = plurals[item.word] ||
+      item.word + "s";
+
+    return words.includes(plural);
+  });
+
+  if (matchingItems.length !== 1) {
+    return {
+      ok: false,
+      reason:
+        matchingItems.length > 1
+          ? "물건이 여러 개 들렸어요. 한 번에 하나의 물건을 주문해 주세요."
+          : "상점에 있는 물건을 알아듣지 못했어요. 필요한 물건을 문장으로 다시 요청해 주세요."
+    };
+  }
+
+  const word = matchingItems[0].word;
+
+  const colors = [
+    "pink","blue","red","yellow"
+  ].filter(color => words.includes(color));
+
+  const sizes = [];
+
+  if (words.includes("big") || words.includes("large")) {
+    sizes.push("big");
+  }
+
+  if (words.includes("small") || words.includes("little")) {
+    sizes.push("small");
+  }
+
+  if (colors.length > 1 || sizes.length > 1) {
+    return {
+      ok: false,
+      reason:
+        "색깔이나 크기가 여러 가지 들렸어요. 한 물건에 원하는 색깔과 크기를 하나씩 말해 주세요."
+    };
+  }
+
+  const hasSentence =
+    positiveMarkers.length > 0 ||
+    (
+      words.length >= 3 &&
+      /\b(?:i|we|you|my|me|please|have|want|need|like|buy|get|take|choose|pick)\b/.test(clause)
+    );
+
+  return {
+    ok: true,
+    word,
+    color: colors[0] || "natural",
+    size: sizes[0] || "normal",
+    sentence: hasSentence
+  };
+}
+
+function processOrder(transcript) {
+
+  const parsed = parseOrder(transcript);
+
+  if (!parsed.ok) {
+
+    setFeedback(
+      "marketFeedback",
+      parsed.reason,
+      "neutral"
+    );
+
+    $("speechStatus").textContent =
+      "한 번 더 말해 보세요.";
+
+    return;
+  }
+
+  if (!parsed.sentence) {
+
+    setFeedback(
+      "marketFeedback",
+      "물건 이름을 알아들었어요! 이번에는 단어만 말하지 말고 영어 문장으로 요청해 보세요.",
+      "retry"
+    );
+
+    $("speakingHelp").open = true;
+
+    return;
+  }
+
+  offer = {
+    word: parsed.word,
+    color: parsed.color,
+    size: parsed.size,
+    mode: "speech",
+    transcript
+  };
+
+  $("shopkeeperText").textContent =
+    "Here you go! Is this what you want?";
+
+  $("speechStatus").textContent =
+    "친구가 알아들은 물건을 확인해 보세요.";
+
+  $("repairArea").innerHTML = "";
+
+  renderOffer();
+}
+
+/* =====================================================
+   14. COMMUNICATION REPAIR & PURCHASE
+===================================================== */
+
+function configsMatch(a,b) {
+  return (
+    a.word === b.word &&
+    a.color === b.color &&
+    a.size === b.size
+  );
+}
+
+function renderOffer() {
+  const root = $("offerArea");
+
+  if (!root) return;
+
+  if (!offer) {
+
+    root.innerHTML = "";
+    resetSpeechButton();
+    return;
+  }
+
+  const item = getItem(offer.word);
+  const matches = configsMatch(offer,plan);
+
+  root.innerHTML = `
+    <div class="offer">
+
+      <div class="center">
+
+        <span class="tag">
+          ${offer.mode === "speech"
+            ? "WHAT I HEARD"
+            : "YOUR MANUAL ORDER"}
+        </span>
+
+      </div>
+
+      <div class="offer-art">
+        ${itemSVG(item,offer.color,offer.size)}
+      </div>
+
+      <div class="offer-word">
+        ${esc(phraseFor(offer))}
+      </div>
+
+      <p class="center small muted">
+        ${PRICE} coins
+      </p>
+
+      <p class="center">
+
+        ${offer.mode === "speech"
+          ? "친구가 알아들은 물건이 맞나요?"
+          : "직접 확인한 주문 내용이 맞나요?"}
+
+      </p>
+
+      ${!matches ? `
+        <div class="feedback retry">
+
+          처음에 선택했던 물건이나 특징과 달라요.
+          원했던 것이 맞는지 확인해 보세요.
+
+        </div>
+      ` : ""}
+
+      <div class="button-row">
+
+        <button class="btn btn-yellow"
+          onclick="confirmPurchase()"
+          ${recognizing ? "disabled" : ""}>
+
+          Yes, thank you!
+
+        </button>
+
+        <button class="btn btn-pink"
+          onclick="rejectOffer()"
+          ${recognizing ? "disabled" : ""}>
+
+          No, try again!
+
+        </button>
+
+      </div>
+
+      ${!matches ? `
+        <p class="small muted center">
+          마음이 바뀌었다면
+          지금 제시된 물건을 구매해도 괜찮아요.
+        </p>
+      ` : ""}
+
+    </div>
+  `;
+
+  resetSpeechButton();
+  renderShop();
+  renderCustomOptions();
+}
+
+function rejectOffer() {
+
+  if (!offer || recognizing) return;
+
+  const oldOffer = {...offer};
+
+  offer = null;
+
+  if (oldOffer.mode === "speech") {
+    report.repairs++;
+  }
+
+  renderOffer();
+
+  const intended = getItem(plan.word);
+
+  let repairFrame =
+    "No, I want a ______, please.";
+
+  let hint = "원하는 물건을 다시 문장으로 말해 보세요.";
+
+  if (intended && oldOffer.word !== plan.word) {
+
+    hint =
+      `친구는 ${oldOffer.word}라고 알아들었어요. ` +
+      `원했던 단어는 ${plan.word}였죠? ` +
+      `두 소리의 차이를 생각하며 다시 말해 보세요.`;
+
+    repairFrame =
+      "No, I want a ______, not a ______.";
+
+  } else if (oldOffer.color !== plan.color) {
+
+    hint =
+      "물건은 맞지만 색깔이 달라요. 원하는 색깔을 추가해서 다시 요청해 보세요.";
+
+  } else if (oldOffer.size !== plan.size) {
+
+    hint =
+      "물건은 맞지만 크기가 달라요. 원하는 크기를 넣어 다시 요청해 보세요.";
+  }
+
+  $("shopkeeperText").textContent =
+    "Oh, sorry! Could you say that again?";
+
+  $("repairArea").innerHTML = `
+    <div class="repair-box">
+
+      <strong>
+        💬 Let's try again!
+      </strong>
+
+      <p class="small"
+        style="margin-top:8px;">
+        ${esc(hint)}
+      </p>
+
+      <details>
+
+        <summary>표현 힌트</summary>
+
+        <div class="frame">
+          ${repairFrame}
+        </div>
+
+        ${intended ? `
+          <p class="small">
+            ${lesson.tips[intended.group].short}
+          </p>
+        ` : ""}
+
+        <div class="button-row">
+
+          <button class="btn btn-white btn-small"
+            onclick="speak('${oldOffer.word}',.8)">
+            🔊 ${oldOffer.word}
+          </button>
+
+          ${intended ? `
+            <button class="btn btn-white btn-small"
+              onclick="speak('${intended.word}',.8)">
+              🔊 ${intended.word}
+            </button>
+          ` : ""}
+
+        </div>
+
+      </details>
+
+      <p class="small muted"
+        style="margin-bottom:0;">
+
+        음성 인식의 차이가 반드시
+        발음이 틀렸다는 뜻은 아니에요.
+
+      </p>
+
+    </div>
+  `;
+
+  renderShop();
+  renderCustomOptions();
+  resetSpeechButton();
+}
+
+function confirmPurchase() {
+
+  if (!offer || recognizing) return;
+
+  if (coins < PRICE) {
+
+    setFeedback(
+      "marketFeedback",
+      "남은 코인이 부족해요.",
+      "neutral"
+    );
+
+    return;
+  }
+
+  const item = getItem(offer.word);
+
+  if (!item) return;
+
+  const purchase = {
+    ...item,
+    id: nextItemId++,
+    color: offer.color,
+    size: offer.size,
+    mode: offer.mode,
+    slot: null
+  };
+
+  purchased.push(purchase);
+
+  coins -= PRICE;
+
+  report.purchases++;
+
+  if (offer.mode === "speech") {
+    report.recognizedPurchases++;
+  } else {
+    report.manualPurchases++;
+  }
+
+  const purchasePhrase = phraseFor(purchase);
+
+  offer = null;
+
+  plan = {
+    word: null,
+    color: "natural",
+    size: "normal"
+  };
+
+  $("shopkeeperText").textContent =
+    "Thank you! Enjoy your new item!";
+
+  $("heardText").classList.add("hidden");
+
+  $("repairArea").innerHTML = "";
+  $("manualArea").classList.add("hidden");
+
+  setFeedback(
+    "marketFeedback",
+    `${purchasePhrase} 구매 완료! 인벤토리에 물건이 들어왔어요. 🪙 -${PRICE}`
+  );
+
+  $("speechStatus").textContent =
+    coins >= PRICE
+      ? "다음 물건을 자유롭게 주문해 보세요."
+      : "코인을 모두 사용했어요.";
+
+  selectedItemId = purchase.id;
+
+  renderOffer();
+  renderPrivatePlan();
+  renderShop();
+  renderCustomOptions();
+
+  updateCoins();
+  updateWorld();
+  resetSpeechButton();
+
+  $("placementMessage").textContent =
+    `${purchasePhrase}를 배치할 빈자리를 선택하세요.`;
+
+  if (window.innerWidth <= 780) {
+    $("worldScene").scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+}
+
+/* =====================================================
+   15. MANUAL SPEAKING MODE
+===================================================== */
+
+function showManualOrder() {
+
+  if (mediaBusy() || offer) {
+    alert("현재 주문이나 마이크 활동을 먼저 마쳐 주세요.");
+    return;
+  }
+
+  if (!plan.word) {
+
+    setFeedback(
+      "marketFeedback",
+      "먼저 원하는 물건을 선택하세요.",
+      "retry"
+    );
+
+    return;
+  }
+
+  if (coins < PRICE) {
+
+    setFeedback(
+      "marketFeedback",
+      "남은 코인이 부족해요.",
+      "neutral"
+    );
+
+    return;
+  }
+
+  const area = $("manualArea");
+
+  area.classList.remove("hidden");
+
+  area.innerHTML = `
+    <div class="manual-box">
+
+      <h3>🗣️ 직접 확인 모드</h3>
+
+      <p class="small">
+
+        먼저 영어 문장으로 주문해 보세요.
+        그다음 실제로 말한 물건과 특징을
+        아래에서 확인하세요.
+
+      </p>
+
+      <p class="small muted">
+
+        친구나 선생님이 들은 내용을
+        대신 선택해 주어도 좋아요.
+
+      </p>
+
+      <label class="small">
+        말한 물건
+      </label>
+
+      <select id="manualWord">
+
+        <option value="">
+          선택하세요
+        </option>
+
+        ${lesson.shop.map(item => `
+          <option value="${item.word}">
+            ${item.word} (${item.meaning})
+          </option>
+        `).join("")}
+
+      </select>
+
+      <label class="small">
+        말한 색깔
+      </label>
+
+      <select id="manualColor">
+
+        ${Object.entries(COLORS).map(([key,c]) => `
+          <option value="${key}">
+            ${c.label}
+          </option>
+        `).join("")}
+
+      </select>
+
+      <label class="small">
+        말한 크기
+      </label>
+
+      <select id="manualSize">
+
+        <option value="normal">기본</option>
+        <option value="small">small</option>
+        <option value="big">big</option>
+
+      </select>
+
+      <label class="check-line small">
+
+        <input type="checkbox"
+          id="manualSpoken">
+
+        위 내용을 영어 문장으로 직접 말했어요.
+
+      </label>
+
+      <div class="button-row">
+
+        <button class="btn btn-blue"
+          onclick="submitManualOrder()">
+          주문 내용 확인
+        </button>
+
+        <button class="btn btn-white"
+          onclick="$('manualArea').classList.add('hidden')">
+          취소
+        </button>
+
+      </div>
+
+      <p class="small muted">
+
+        이 모드에서는 음성을 자동으로 평가하지 않아요.
+        직접 발화하고 확인하는 활동이에요.
+
+      </p>
+
+    </div>
+  `;
+}
+
+function submitManualOrder() {
+  if (offer || mediaBusy()) return;
+
+  if (!$("manualSpoken").checked) {
+    alert("영어 문장으로 먼저 말해 주세요.");
+    return;
+  }
+
+  const word = $("manualWord").value;
+
+  if (!getItem(word)) {
+    alert("말한 물건을 선택하세요.");
+    return;
+  }
+
+  offer = {
+    word,
+    color: $("manualColor").value,
+    size: $("manualSize").value,
+    mode: "manual",
+    transcript: null
+  };
+
+  $("manualArea").classList.add("hidden");
+
+  $("shopkeeperText").textContent =
+    "Is this your order?";
+
+  $("repairArea").innerHTML = "";
+
+  renderOffer();
+}
+
+/* =====================================================
+   16. WORLD DECORATION
+===================================================== */
+
+function updateWorld() {
+
+  const grid = $("placementGrid");
+  const inventory = $("inventory");
+
+  if (!grid || !inventory) return;
+
+  grid.innerHTML = Array.from(
+    {length: PLOT_COUNT},
+    (_,slot) => {
+
+      const item = purchased.find(p => p.slot === slot);
+
+      const isSelected =
+        item && selectedItemId === item.id;
+
+      return `
+        <button class="plot
+          ${item ? "occupied" : ""}
+          ${selectedItemId && !item ? "available" : ""}
+          ${isSelected ? "selected" : ""}"
+
+          aria-label="${item
+            ? esc(item.word) + " 이동"
+            : "빈자리 " + (slot+1)}"
+
+          onclick="clickPlot(${slot})"
+
+          ${item ? `
+            draggable="true"
+            ondragstart="dragItem(event,${item.id})"
+            ondragend="dragEnd(event)"
+          ` : ""}
+
+          ondragover="allowDrop(event)"
+          ondragleave="leaveDrop(event)"
+          ondrop="dropItem(event,${slot})">
+
+          ${item ? `
+            <div class="placed-art">
+              ${itemSVG(item,item.color,item.size)}
+            </div>
+
+            <div class="plot-name">
+              ${esc(item.word)}
+            </div>
+          ` : ""}
+
+        </button>
+      `;
+    }
+  ).join("");
+
+  const unplaced =
+    purchased.filter(item => item.slot === null);
+
+  inventory.innerHTML = unplaced.length
+    ? unplaced.map(item => `
+        <button class="inventory-item
+          ${selectedItemId === item.id ? "selected" : ""}"
+
+          draggable="true"
+
+          ondragstart="dragItem(event,${item.id})"
+          ondragend="dragEnd(event)"
+
+          onclick="selectItem(${item.id})">
+
+          ${itemSVG(item,item.color,item.size)}
+
+          <span>${esc(item.word)}</span>
+
+          ${item.color !== "natural"
+            ? `<span class="muted">${item.color}</span>`
+            : ""}
+
+        </button>
+      `).join("")
+    : `
+      <div class="inventory-empty">
+        ${purchased.length
+          ? "모든 물건이 공간에 배치되었어요!"
+          : "아직 구매한 물건이 없어요."}
+      </div>
+    `;
+
+  updateCollection();
+}
+
+function selectItem(id) {
+  const item = purchased.find(p => p.id === id);
+
+  if (!item) return;
+
+  selectedItemId =
+    selectedItemId === id ? null : id;
+
+  updateWorld();
+
+  $("placementMessage").textContent =
+    selectedItemId
+      ? `${phraseFor(item)}를 배치할 자리를 선택하세요.`
+      : "선택이 취소되었어요.";
+}
+
+function clickPlot(slot) {
+
+  const occupying =
+    purchased.find(p => p.slot === slot);
+
+  if (!selectedItemId) {
+
+    if (occupying) {
+
+      selectedItemId = occupying.id;
+
+      updateWorld();
+
+      $("placementMessage").textContent =
+        `${occupying.word}를 이동할 자리를 선택하세요.`;
+
+    } else {
+
+      $("placementMessage").textContent =
+        "인벤토리에서 물건을 먼저 선택하세요.";
+    }
+
+    return;
+  }
+
+  if (occupying && occupying.id === selectedItemId) {
+
+    clearSelection();
+    return;
+  }
+
+  placeItem(selectedItemId,slot);
+}
+
+function placeItem(id,slot) {
+
+  if (
+    !Number.isInteger(slot) ||
+    slot < 0 ||
+    slot >= PLOT_COUNT
+  ) return;
+
+  const item = purchased.find(p => p.id === id);
+
+  if (!item) return;
+
+  const occupying =
+    purchased.find(p => p.slot === slot);
+
+  if (occupying && occupying.id !== item.id) {
+
+    const previousSlot = item.slot;
+
+    occupying.slot = previousSlot;
+
+    item.slot = slot;
+
+  } else {
+
+    item.slot = slot;
+  }
+
+  selectedItemId = null;
+
+  updateWorld();
+
+  $("placementMessage").textContent =
+    `✨ ${phraseFor(item)} 배치 완료!`;
+}
+
+function returnSelectedItem() {
+  const item = purchased.find(
+    p => p.id === selectedItemId
+  );
+
+  if (!item) {
+
+    $("placementMessage").textContent =
+      "보관할 물건을 먼저 선택하세요.";
+
+    return;
+  }
+
+  item.slot = null;
+
+  selectedItemId = null;
+
+  updateWorld();
+
+  $("placementMessage").textContent =
+    `${item.word}를 인벤토리에 보관했어요.`;
+}
+
+function clearSelection() {
+  selectedItemId = null;
+  updateWorld();
+
+  $("placementMessage").textContent =
+    "물건을 선택하면 다시 배치할 수 있어요.";
+}
+
+function dragItem(event,id) {
+  event.dataTransfer.setData("text/plain",String(id));
+  event.dataTransfer.effectAllowed = "move";
+
+  selectedItemId = id;
+
+  document.querySelectorAll(".plot").forEach(plot => {
+    plot.classList.add("available");
+  });
+}
+
+function dragEnd() {
+  document.querySelectorAll(".plot").forEach(plot => {
+    plot.classList.remove("drag-over");
+  });
+
+  updateWorld();
+}
+
+function allowDrop(event) {
+  event.preventDefault();
+
+  event.dataTransfer.dropEffect = "move";
+
+  event.currentTarget.classList.add("drag-over");
+}
+
+function leaveDrop(event) {
+  event.currentTarget.classList.remove("drag-over");
+}
+
+function dropItem(event,slot) {
+  event.preventDefault();
+
+  event.currentTarget.classList.remove("drag-over");
+
+  const id = Number(
+    event.dataTransfer.getData("text/plain")
+  );
+
+  if (purchased.some(p => p.id === id)) {
+    placeItem(id,slot);
+  }
+}
+
+function updateCollection() {
+
+  const placed =
+    purchased.filter(item => item.slot !== null);
+
+  const groups = [
+    placed.filter(item => item.group === 0).length,
+    placed.filter(item => item.group === 1).length
+  ];
+
+  $("collectionProgress").innerHTML =
+    groups.map((count,i) => `
+      <div class="collection-card
+        ${i ? "second" : ""}
+        ${count ? "done" : ""}">
+
+        <strong>${lesson.sounds[i]}</strong>
+
+        <div>
+          ${count ? "✓ " + count + "개 배치" : "아직 배치하지 않았어요"}
+        </div>
+
+      </div>
+    `).join("");
+
+  const ready =
+    groups[0] > 0 && groups[1] > 0;
+
+  $("finishButton").disabled = !ready;
+
+  $("finishStatus").textContent = ready
+    ? "두 목표 소리를 모두 활용했어요! 더 꾸미거나 활동을 마칠 수 있어요."
+    : "두 종류의 목표 소리가 포함된 물건을 각각 하나 이상 배치해 주세요.";
+
+  /*
+    Avoid getting permanently stuck if all coins were
+    spent on only one sound category.
+
+    One rescue coupon per lesson provides enough
+    coins for a missing contrastive item.
+  */
+
+  if (
+    !ready &&
+    coins < PRICE &&
+    !report.rescueCoupon
+  ) {
+
+    const missing = purchased.some(p => p.group === 0) === false ||
+      purchased.some(p => p.group === 1) === false;
+
+    if (missing) {
+
+      report.rescueCoupon = true;
+
+      addCoins(PRICE);
+
+      setFeedback(
+        "marketFeedback",
+        "동물 친구가 두 종류의 소리를 모두 연습할 수 있도록 특별 쿠폰 20코인을 주었어요!",
+        "good"
+      );
+
+      resetSpeechButton();
+    }
+  }
+
+  /*
+    If a learner spends the rescue coupon on the
+    same sound again, allow an exchange to recover
+    the price of one item.
+  */
+
+  let exchangeButton = $("exchangeButton");
+
+  if (
+    !ready &&
+    coins < PRICE &&
+    purchased.length > 1
+  ) {
+
+    if (!exchangeButton) {
+
+      exchangeButton =
+        document.createElement("button");
+
+      exchangeButton.id = "exchangeButton";
+      exchangeButton.className = "btn btn-white btn-small";
+
+      exchangeButton.textContent =
+        "선택한 물건 교환하기 (+20코인)";
+
+      exchangeButton.onclick = exchangeSelectedItem;
+
+      $("collectionProgress").after(exchangeButton);
+    }
+
+  } else if (exchangeButton) {
+    exchangeButton.remove();
+  }
+}
+
+function exchangeSelectedItem() {
+
+  if (offer || mediaBusy()) {
+    alert("진행 중인 주문을 먼저 마쳐 주세요.");
+    return;
+  }
+
+  const item = purchased.find(
+    p => p.id === selectedItemId
+  );
+
+  if (!item) {
+    alert("교환할 물건을 먼저 선택하세요.");
+    return;
+  }
+
+  if (!confirm(
+    `${item.word}를 교환하고 20코인을 돌려받을까요?`
+  )) return;
+
+  purchased = purchased.filter(
+    p => p.id !== item.id
+  );
+
+  selectedItemId = null;
+
+  addCoins(PRICE);
+
+  updateWorld();
+  resetSpeechButton();
+}
+
+/* =====================================================
+   17. REFLECTION
+   One brief reflection, not another drilling activity.
+===================================================== */
+
+function renderReflection() {
+
+  if (mediaBusy() || offer) {
+    alert("진행 중인 주문이나 녹음을 먼저 마쳐 주세요.");
+    return;
+  }
+
+  const placed =
+    purchased.filter(item => item.slot !== null);
+
+  if (
+    !placed.some(item => item.group === 0) ||
+    !placed.some(item => item.group === 1)
+  ) return;
+
+  show(`
+    <div class="panel"
+      style="max-width:850px;margin:auto;">
+
+      <div class="center">
+
+        <div class="trophy">🌷</div>
+
+        <span class="tag">
+          MY LITTLE REFLECTION
+        </span>
+
+        <h2 style="margin:14px 0;">
+          How was your adventure?
+        </h2>
+
+      </div>
+
+      ${friendMessage(
+        "멋진 공간을 만들었구나! 오늘 영어로 원하는 뜻을 전달했던 경험을 생각해 보자."
+      )}
+
+      <h3>오늘 나의 발음은 어땠나요?</h3>
+
+      <label class="check-line">
+
+        <input type="radio"
+          name="confidence"
+          value="confident">
+
+        😊 두 소리를 구별하고
+        원하는 물건을 영어로 요청할 수 있었어요.
+
+      </label>
+
+      <label class="check-line">
+
+        <input type="radio"
+          name="confidence"
+          value="developing">
+
+        🙂 힌트를 참고하거나 다시 말하면서
+        원하는 물건을 요청할 수 있었어요.
+
+      </label>
+
+      <label class="check-line">
+
+        <input type="radio"
+          name="confidence"
+          value="practice">
+
+        🌱 두 소리를 구별해서 말하는 것이
+        아직 어려워서 더 연습하고 싶어요.
+
+      </label>
+
+      <div class="goal-box">
+
+        <strong>Remember!</strong><br>
+
+        영어 발음은 모두가 똑같이 말하기 위한 것이 아니에요.
+        서로의 말을 이해하고 원하는 뜻을 전달하는 것이 중요해요.
+        한 번에 전달되지 않아도 다시 말하고
+        서로 확인할 수 있어요.
+
+      </div>
+
+      <div class="button-row">
+
+        <button class="btn btn-blue"
+          onclick="completeLesson()">
+
+          Finish! 🏡
+
+        </button>
+
+      </div>
+
+    </div>
+  `, "reflection");
+}
+
+function completeLesson() {
+
+  const choice = document.querySelector(
+    'input[name="confidence"]:checked'
+  );
+
+  if (!choice) {
+
+    alert("오늘의 느낌을 하나 선택해 주세요.");
+    return;
+  }
+
+  report.confidence = choice.value;
+
+  completed[lessonKey] = true;
+
+  saveStorage(
+    "littleSoundWorldCompletedV2",
+    completed
+  );
+
+  renderComplete();
+}
+
+/* =====================================================
+   18. LEARNING REPORT
+===================================================== */
+
+function staticWorldHTML() {
+
+  return `
+    <div class="world-scene">
+
+      <div class="scene-bg">
+        ${sceneSVG(lessonKey)}
+      </div>
+
+      <div class="placement-grid">
+
+        ${Array.from({length:PLOT_COUNT},(_,slot) => {
+
+          const item =
+            purchased.find(p => p.slot === slot);
+
+          return `
+            <div class="plot">
+
+              ${item ? `
+                <div class="placed-art">
+                  ${itemSVG(item,item.color,item.size)}
+                </div>
+
+                <div class="plot-name">
+                  ${esc(item.word)}
+                </div>
+              ` : ""}
+
+            </div>
+          `;
+        }).join("")}
+
+      </div>
+
+    </div>
+  `;
+}
+
+function renderComplete() {
+
+  const placed =
+    purchased.filter(item => item.slot !== null);
+
+  const confidenceText = {
+    confident:
+      "두 소리를 구별하고 영어로 요청할 수 있었어요.",
+    developing:
+      "힌트와 재시도를 활용하여 의미를 전달했어요.",
+    practice:
+      "조금 더 발음 연습을 하고 싶어요."
+  }[report.confidence];
+
+  show(`
+    <div class="panel center">
+
+      <span class="tag">
+        YOUR WORLD IS COMPLETE
+      </span>
+
+      <h1 style="
+        margin:17px 0 8px;
+        color:#a27b55;
+      ">
+        Wonderful!
+      </h1>
+
+      <h2>
+        ${lesson.title} 완성!
+      </h2>
+
+      <p>
+
+        영어의 소리를 배우고
+        직접 원하는 뜻을 표현하여
+        나만의 세상을 만들었어요.
+
+      </p>
+
+      <div class="final-scene">
+        ${staticWorldHTML()}
+      </div>
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+
+          <div>🎧</div>
+
+          <div class="summary-number">
+            ${report.listeningCorrect}/${report.listeningTotal}
+          </div>
+
+          <div class="summary-label">
+            듣기 첫 시도 정답
+          </div>
+
+        </div>
+
+        <div class="summary-card">
+
+          <div>🎙️</div>
+
+          <div class="summary-number">
+            ${report.studioCompleted}/2
+          </div>
+
+          <div class="summary-label">
+            단어 발음 연습
+          </div>
+
+        </div>
+
+        <div class="summary-card">
+
+          <div>🏡</div>
+
+          <div class="summary-number">
+            ${placed.length}
+          </div>
+
+          <div class="summary-label">
+            배치한 물건
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="panel"
+        style="text-align:left;">
+
+        <h3>My Learning Report</h3>
+
+        <p>
+
+          <strong>오늘 연습한 소리</strong><br>
+
+          ${lesson.sounds.join(" & ")}
+
+        </p>
+
+        <p>
+
+          <strong>내가 활용한 단어</strong><br>
+
+          ${[...new Set(placed.map(p => p.word))]
+            .map(esc).join(", ")}
+
+        </p>
+
+        <p>
+
+          <strong>문장 발화 활동 기록</strong><br>
+
+          음성 인식 후 확인한 주문:
+          ${report.recognizedPurchases}회
+
+          <br>
+
+          직접 발화 후 수동 확인한 주문:
+          ${report.manualPurchases}회
+
+          <br>
+
+          음성 주문을 거절하고 다시 말할 기회:
+          ${report.repairs}회
+
+        </p>
+
+        <p>
+
+          <strong>나의 자기 평가</strong><br>
+
+          ${confidenceText}
+
+        </p>
+
+        <p>
+
+          <strong>Bonus · My World Tour</strong><br>
+
+          ${report.bonus
+            ? "✓ 공간 소개 활동에 도전했어요!"
+            : "선택 활동 — 이번에는 건너뛰었어요."}
+
+        </p>
+
+        ${recordings.bonus ? `
+          <div class="recorder">
+
+            <strong>My World Tour Recording</strong>
+
+            <div>
+
+              <audio controls
+                src="${recordings.bonus}">
+              </audio>
+
+            </div>
+
+          </div>
+        ` : ""}
+
+        <div class="notice">
+
+          <strong>About My Learning Report</strong><br>
+
+          듣기 결과는 소리 변별 문항의 정답 기록이에요.
+          나머지 결과는 연습 참여, 주문 방식,
+          물건 배치 및 자기 평가를 보여 줘요.
+
+          <br><br>
+
+          음성 인식 결과는 인간 청자가 느끼는
+          intelligibility 또는 comprehensibility를
+          직접 측정한 점수가 아니며,
+          원어민 발음과의 유사도를 평가하지 않아요.
+
+        </div>
+
+      </div>
+
+      ${friendMessage(
+        "고마워! 네가 영어로 원하는 것을 표현해서 이렇게 멋진 공간을 만들 수 있었어. 또 다른 세상에서 만나자!"
+      )}
+
+      <div class="button-row">
+
+        <button class="btn btn-white"
+          onclick="saveWorldImage()">
+          🖼️ 나의 공간 이미지 저장
+        </button>
+
+        <button class="btn btn-pink"
+          onclick="startLesson('${lessonKey}')">
+          다시 만들기
+        </button>
+
+        <button class="btn btn-blue"
+          onclick="goHome()">
+          다른 세상 탐험하기 →
+        </button>
+
+      </div>
+
+      <div class="notice">
+
+        완성된 공간은 이미지로 저장할 수 있어요.
+        홈으로 돌아가거나 다시 시작하면
+        현재 배치와 녹음은 초기화돼요.
+
+      </div>
+
+    </div>
+  `, "complete");
+}
+
+/* =====================================================
+   19. SAVE WORLD AS PNG
+===================================================== */
+
+async function saveWorldImage() {
+
+  if (currentView !== "complete") return;
+
+  const exportKey = lessonKey;
+  const exportTitle = lesson.title;
+  const exportItems = purchased
+    .filter(item => item.slot !== null)
+    .map(item => ({...item}));
+
+  const width = 1280;
+  const height = 1050;
+
+  const canvas = document.createElement("canvas");
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+
+  if (!ctx) {
+    alert("이미지를 저장할 수 없는 환경이에요.");
+    return;
+  }
+
+  ctx.fillStyle = "#fffaf1";
+  ctx.fillRect(0,0,width,height);
+
+  ctx.textAlign = "center";
+
+  ctx.fillStyle = "#987557";
+  ctx.font = "bold 46px Arial";
+  ctx.fillText(exportTitle,width/2,63);
+
+  ctx.font = "24px Arial";
+  ctx.fillStyle = "#807b75";
+  ctx.fillText(
+    "My Little Sound World",
+    width/2,
+    101
+  );
+
+  const sceneX = 40;
+  const sceneY = 135;
+  const sceneW = 1200;
+  const sceneH = 880;
+
+  try {
+
+    await drawSVGToCanvas(
+      ctx,
+      sceneSVG(exportKey),
+      sceneX,
+      sceneY,
+      sceneW,
+      sceneH
+    );
+
+    const gridX = sceneX + sceneW * .06;
+    const gridY = sceneY + sceneH * .31;
+
+    const gridW = sceneW * .88;
+    const gridH = sceneH * .64;
+
+    const cellW = gridW / 6;
+    const cellH = gridH / 4;
+
+    for (const item of exportItems) {
+
+      const col = item.slot % 6;
+      const row = Math.floor(item.slot / 6);
+
+      const x = gridX + col * cellW;
+      const y = gridY + row * cellH;
+
+      await drawSVGToCanvas(
+        ctx,
+        itemSVG(item,item.color,item.size),
+        x + 5,
+        y + 3,
+        cellW - 10,
+        cellH - 14
+      );
+
+      ctx.font = "bold 20px Arial";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#65513b";
+
+      ctx.fillText(
+        item.word,
+        x + cellW/2,
+        y + cellH - 6
+      );
+    }
+
+    canvas.toBlob(blob => {
+
+      if (!blob) {
+        alert("이미지 저장에 실패했어요.");
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+
+      const anchor =
+        document.createElement("a");
+
+      anchor.href = url;
+      anchor.download =
+        exportTitle.replace(/\s+/g,"-") + ".png";
+
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      },1000);
+
+    },"image/png");
+
+  } catch {
+
+    alert(
+      "이미지를 저장할 수 없어요. 브라우저의 스크린샷 기능으로 공간을 기록할 수 있어요."
+    );
+  }
+}
+
+function drawSVGToCanvas(ctx,svg,x,y,w,h) {
+
+  return new Promise((resolve,reject) => {
+
+    const normalized =
+      svg.includes('xmlns="http://www.w3.org/2000/svg"')
+        ? svg
+        : svg.replace(
+            "<svg",
+            '<svg xmlns="http://www.w3.org/2000/svg"'
+          );
+
+    const blob = new Blob(
+      [normalized],
+      {type:"image/svg+xml;charset=utf-8"}
+    );
+
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+
+    img.onload = () => {
+      try {
+        ctx.drawImage(img,x,y,w,h);
+        resolve();
+      } catch (error) {
+        reject(error);
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    };
+
+    img.onerror = error => {
+      URL.revokeObjectURL(url);
+      reject(error);
+    };
+
+    img.src = url;
+  });
+}
+
+/* =====================================================
+   20. CLEANUP & INITIALIZATION
+===================================================== */
+
+window.addEventListener("pagehide", () => {
+  stopAllMedia();
+  clearRecordings();
+});
+
+renderHome();
+
+</script>
+
+</body>
+</html>
